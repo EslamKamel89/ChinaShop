@@ -2,7 +2,13 @@
 export default defineNuxtConfig({
   devtools: { enabled: true },
 
-  modules: ["@nuxt/ui", "@nuxt/eslint", "@nuxt/icon", "@nuxt/fonts"],
+  modules: [
+    "@nuxt/ui",
+    "@nuxt/eslint",
+    "@nuxt/icon",
+    "@nuxt/fonts",
+    "@nuxtjs/supabase",
+  ],
 
   css: ["~/assets/css/main.css"],
 
