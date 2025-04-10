@@ -17,6 +17,7 @@
     "@nuxt/fonts": "^0.11.1",
     "@nuxt/icon": "^1.12.0",
     "@nuxt/ui": "^3.0.2",
+    "@prisma/nuxt": "^0.3.0",
     "nuxt": "^3.16.2"
   },
   "devDependencies": {
