@@ -11,6 +11,9 @@
     "lint": "eslint .",
     "lint:fix": "eslint --fix ."
   },
+  "prisma": {
+    "seed": "node prisma/seed.js"
+  },
   "dependencies": {
     "@iconify-json/lucide": "^1.2.35",
     "@iconify-json/simple-icons": "^1.2.31",
