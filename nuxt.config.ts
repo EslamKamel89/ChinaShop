@@ -7,7 +7,7 @@ export default defineNuxtConfig({
     "@nuxt/eslint",
     "@nuxt/icon",
     "@nuxt/fonts",
-    "@nuxtjs/supabase",
+    // "@nuxtjs/supabase",
     "@prisma/nuxt",
   ],
 
