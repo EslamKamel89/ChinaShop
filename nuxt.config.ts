@@ -10,7 +10,7 @@ export default defineNuxtConfig({
     plugins: [tailwindcss()],
   },
 
-  modules: ["shadcn-nuxt", "@vueuse/nuxt"],
+  modules: ["shadcn-nuxt", "@vueuse/nuxt", "@nuxt/icon"],
   shadcn: {
     /**
      * Prefix for all the imported component
@@ -21,5 +21,9 @@ export default defineNuxtConfig({
      * @default "./components/ui"
      */
     componentDir: "./components/ui",
+  },
+  icon: {
+    mode: "css",
+    cssLayer: "base",
   },
 });
