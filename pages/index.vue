@@ -1,6 +1,4 @@
 <script setup lang="ts"></script>
 <template>
-  <NuxtLayout>
-    <NuxtPage />
-  </NuxtLayout>
+  <div class="text-red-500">Home Page</div>
 </template>
