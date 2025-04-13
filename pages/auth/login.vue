@@ -1,12 +1,20 @@
-<script lang="ts">
-export const description =
+<script lang="ts" setup>
+const description =
   "A login page with two columns. The first column has the login form with email and password. There's a Forgot your passwork link and a link to sign up if you do not have an account. The second column has a cover image.";
-export const iframeHeight = "800px";
-export const containerClass = "w-full h-full p-4 lg:p-0";
+const iframeHeight = "800px";
+const containerClass = "w-full h-full p-4 lg:p-0";
+type Payload = {
+  email?: string;
+  password?: string;
+};
+const form = ref<Payload>({});
+const submit = async () => {};
 </script>
-<script setup lang="ts"></script>
 <template>
-  <div class="w-full lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]">
+  <form
+    @submit.prevent="submit"
+    class="w-full lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]"
+  >
     <div class="flex items-center justify-center py-12">
       <div class="mx-auto grid w-[350px] gap-6">
         <div class="grid gap-2 text-center">
@@ -22,7 +30,7 @@ export const containerClass = "w-full h-full p-4 lg:p-0";
               id="email"
               type="email"
               placeholder="m@example.com"
-              required
+              v-model="form.email"
             />
           </div>
           <div class="grid gap-2">
@@ -35,14 +43,14 @@ export const containerClass = "w-full h-full p-4 lg:p-0";
                 Forgot your password?
               </a>
             </div>
-            <Input id="password" type="password" required />
+            <Input id="password" type="password" v-model="form.password" />
           </div>
           <Button type="submit" class="w-full"> Login </Button>
-          <Button variant="outline" class="w-full"> Login with Google </Button>
+          <AuthSocialButton title="Login With Github" icon="uil:github" />
         </div>
         <div class="mt-4 text-center text-sm">
           Don't have an account?
-          <a href="#" class="underline"> Sign up </a>
+          <NuxtLink to="/auth/register" class="underline"> Sign up </NuxtLink>
         </div>
       </div>
     </div>
@@ -55,5 +63,5 @@ export const containerClass = "w-full h-full p-4 lg:p-0";
         class="h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
       />
     </div>
-  </div>
+  </form>
 </template>
