@@ -2,6 +2,9 @@
 <template>
   <div>
     <h2>Home page</h2>
-    <Icon name="uil:github" style="color: black" />
+    <ul class="flex items-center">
+      <li><NuxtLink to="/auth/login">Login</NuxtLink></li>
+      <li><NuxtLink to="/auth/register">Register</NuxtLink></li>
+    </ul>
   </div>
 </template>
