@@ -15,7 +15,7 @@ export default defineNuxtConfig({
     /**
      * Prefix for all the imported component
      */
-    prefix: "Sh",
+    prefix: "",
     /**
      * Directory that the component lives in.
      * @default "./components/ui"

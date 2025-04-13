@@ -2,6 +2,6 @@
 <template>
   <div>
     <h2>Home page</h2>
-    <ShButton>Button</ShButton>
+    <Button>Button</Button>
   </div>
 </template>
