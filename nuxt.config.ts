@@ -10,7 +10,12 @@ export default defineNuxtConfig({
     plugins: [tailwindcss()],
   },
 
-  modules: ["shadcn-nuxt", "@vueuse/nuxt", "@nuxt/icon"],
+  modules: [
+    "shadcn-nuxt",
+    "@vueuse/nuxt",
+    "@nuxt/icon",
+    "nuxt-auth-utils",
+  ],
   shadcn: {
     /**
      * Prefix for all the imported component
