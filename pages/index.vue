@@ -1,4 +1,7 @@
 <script setup lang="ts"></script>
 <template>
-  <div class="text-red-500">Home Page</div>
+  <div>
+    <h2>Home page</h2>
+    <ShButton>Button</ShButton>
+  </div>
 </template>
