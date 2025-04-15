@@ -1,4 +1,6 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const { user } = useUserSession();
+</script>
 <template>
   <div>
     <h2>Home page</h2>
@@ -14,5 +16,6 @@
         >
       </li>
     </ul>
+    <div>{{ user }}</div>
   </div>
 </template>

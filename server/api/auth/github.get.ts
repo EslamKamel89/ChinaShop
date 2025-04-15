@@ -5,12 +5,17 @@ export default defineOAuthGitHubEventHandler({
     emailRequired: true,
   },
   async onSuccess(event, { user, tokens }) {
+    // pr(user, "User data from github");
     let currentUser = await db.user.findUnique({
       where: { email: user.email },
     });
     if (!currentUser) {
       currentUser = await db.user.create({
-        data: { email: user.email, name: user.name, avatarUrl: user.avatarUrl },
+        data: {
+          email: user.email,
+          name: user.name,
+          avatarUrl: user.avatar_url,
+        },
       });
     }
     let oAuthAccount = await db.oauthAccount.findFirst({
