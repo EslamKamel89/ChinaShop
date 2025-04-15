@@ -1,3 +1,4 @@
+import { santizeUser } from "~/server/utils/auth";
 import db from "~/utils/db";
 export default defineOAuthGitHubEventHandler({
   config: {
@@ -23,13 +24,13 @@ export default defineOAuthGitHubEventHandler({
           providerUserId: user.id + "",
         },
       });
-    } else {
     }
-    await setUserSession(event, {
-      user: {
-        githubId: user.id,
-      },
-    });
+    const trasnformedUser = santizeUser(currentUser);
+    if (trasnformedUser) {
+      await setUserSession(event, {
+        user: santizeUser(currentUser)!,
+      });
+    }
     return sendRedirect(event, "/");
   },
   // Optional, will return a json error and 401 status code by default
