@@ -1,8 +1,30 @@
+import db from "~/utils/db";
 export default defineOAuthGitHubEventHandler({
   config: {
     emailRequired: true,
   },
   async onSuccess(event, { user, tokens }) {
+    let currentUser = await db.user.findUnique({
+      where: { email: user.email },
+    });
+    if (!currentUser) {
+      currentUser = await db.user.create({
+        data: { email: user.email, name: user.name, avatarUrl: user.avatarUrl },
+      });
+    }
+    let oAuthAccount = await db.oauthAccount.findFirst({
+      where: { userId: currentUser.id },
+    });
+    if (!oAuthAccount) {
+      oAuthAccount = await db.oauthAccount.create({
+        data: {
+          userId: currentUser.id,
+          providerId: "github",
+          providerUserId: user.id + "",
+        },
+      });
+    } else {
+    }
     await setUserSession(event, {
       user: {
         githubId: user.id,
