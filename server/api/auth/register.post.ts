@@ -26,5 +26,5 @@ export default defineEventHandler(async (e) => {
       user: transformedUser,
     });
   }
-  return sendRedirect(e, "/");
+  return transformedUser;
 });

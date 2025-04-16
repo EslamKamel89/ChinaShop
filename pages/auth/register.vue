@@ -7,7 +7,7 @@ const containerClass = "w-full h-screen flex items-center justify-center px-4";
 const form = ref<AuthForm>({
   email: "",
   password: "",
-  // name: undefined,
+  name: "",
 });
 const error = ref<Partial<Record<keyof AuthForm, string>>>({});
 const onSubmit = async () => {
@@ -17,10 +17,16 @@ const onSubmit = async () => {
       result.error.errors.forEach((e) => {
         error.value[e.path[0] as keyof AuthForm] = e.message;
       });
-      pr(error.value);
+      // pr(error.value);
       return;
     }
-    $fetch("/api/auth/register", { method: "POST", body: result.data });
+    const res = await $fetch("/api/auth/register", {
+      method: "POST",
+      body: result.data,
+    });
+    if (res) {
+      navigateTo("/");
+    }
   } catch (error) {
     pr(error, "register.vue");
   }
@@ -42,6 +48,9 @@ const onSubmit = async () => {
             <div class="col-span-2 grid gap-2">
               <Label for="name">Name</Label>
               <Input id="name" placeholder="Mohamed" v-model="form.name" />
+              <p v-if="error.name" class="text-xs text-red-500">
+                {{ error.name }}
+              </p>
             </div>
           </div>
           <div class="grid gap-2">
@@ -52,10 +61,16 @@ const onSubmit = async () => {
               placeholder="m@example.com"
               v-model="form.email"
             />
+            <p v-if="error.email" class="text-xs text-red-500">
+              {{ error.email }}
+            </p>
           </div>
           <div class="grid gap-2">
             <Label for="password">Password</Label>
             <Input id="password" type="password" v-model="form.password" />
+            <p v-if="error.password" class="text-xs text-red-500">
+              {{ error.password }}
+            </p>
           </div>
           <Button type="submit" class="w-full"> Create an account </Button>
           <AuthSocialButton title="Register With Github" icon="uil:github" />
