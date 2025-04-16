@@ -33,7 +33,7 @@ export default defineOAuthGitHubEventHandler({
     const trasnformedUser = santizeUser(currentUser);
     if (trasnformedUser) {
       await setUserSession(event, {
-        user: santizeUser(currentUser)!,
+        user: trasnformedUser,
       });
     }
     return sendRedirect(event, "/");
