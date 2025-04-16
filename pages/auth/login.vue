@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { AlertCircle } from "lucide-vue-next";
+
 const description =
   "A login page with two columns. The first column has the login form with email and password. There's a Forgot your passwork link and a link to sign up if you do not have an account. The second column has a cover image.";
 const iframeHeight = "800px";
@@ -9,6 +11,7 @@ const form = ref<AuthForm>({
   password: "",
 });
 const error = ref<Partial<Record<keyof AuthForm, string>>>({});
+const serverError = ref<string>();
 const handleSubmit = async () => {
   try {
     const result = authSchema.safeParse(form.value);
@@ -21,11 +24,16 @@ const handleSubmit = async () => {
     const res = await $fetch("/api/auth/login", {
       method: "POST",
       body: result.data,
+      onResponseError(e) {
+        serverError.value = e.response.statusText;
+      },
     });
     if (res) {
       navigateTo("/");
     }
-  } catch (error) {}
+  } catch (error) {
+    pr(error, "login.vue");
+  }
 };
 </script>
 <template>
@@ -37,6 +45,15 @@ const handleSubmit = async () => {
       <div class="mx-auto grid w-[350px] gap-6">
         <div class="grid gap-2 text-center">
           <h1 class="text-3xl font-bold">Login</h1>
+          <Alert v-if="serverError" variant="destructive">
+            <AlertCircle class="w-4 h-4" />
+            <AlertTitle>Warning!</AlertTitle>
+            <AlertDescription>
+              <div class="w-full flex items-center justify-center">
+                <p>{{ serverError }}</p>
+              </div>
+            </AlertDescription>
+          </Alert>
           <p class="text-balance text-muted-foreground">
             Enter your email below to login to your account
           </p>

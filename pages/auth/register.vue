@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { AlertCircle } from "lucide-vue-next";
 const description =
   "A sign up form with first name, last name, email and password inside a card. There's an option to sign up with GitHub and a link to login if you already have an account";
 const iframeHeight = "600px";
@@ -10,6 +11,7 @@ const form = ref<AuthForm>({
   name: "",
 });
 const error = ref<Partial<Record<keyof AuthForm, string>>>({});
+const serverError = ref<string>();
 const onSubmit = async () => {
   try {
     const result = authSchema.safeParse(form.value);
@@ -23,6 +25,9 @@ const onSubmit = async () => {
     const res = await $fetch("/api/auth/register", {
       method: "POST",
       body: result.data,
+      onResponseError(e) {
+        serverError.value = e.response.statusText;
+      },
     });
     if (res) {
       navigateTo("/");
@@ -38,6 +43,15 @@ const onSubmit = async () => {
     <Card class="mx-auto max-w-sm">
       <CardHeader>
         <CardTitle class="text-xl"> Sign Up </CardTitle>
+        <Alert v-if="serverError" variant="destructive">
+          <AlertCircle class="w-4 h-4" />
+          <AlertTitle>Warning!</AlertTitle>
+          <AlertDescription>
+            <div class="w-full flex items-center justify-start">
+              <p>{{ serverError }}</p>
+            </div>
+          </AlertDescription>
+        </Alert>
         <CardDescription>
           Enter your information to create an account
         </CardDescription>

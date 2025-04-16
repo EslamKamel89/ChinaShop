@@ -12,7 +12,7 @@ export default defineEventHandler(async (e) => {
   if (!user) {
     throw createError({
       statusCode: 401,
-      statusMessage: "Invlaid Credentials",
+      statusMessage: "Invalid Credentials",
     });
   }
   if (!user.hashedPassword) {
@@ -30,7 +30,7 @@ export default defineEventHandler(async (e) => {
   if (!isPasswordCorrect) {
     throw createError({
       statusCode: 401,
-      statusMessage: "Invlaid Credentials",
+      statusMessage: "Invalid Credentials",
     });
   }
   const transformedUser = santizeUser(user);
