@@ -1,0 +1,21 @@
+[
+    {
+        "validation": "email",
+        "code": "invalid_string",
+        "message": "Invalid email",
+        "path": [
+            "email"
+        ]
+    },
+    {
+        "code": "too_small",
+        "minimum": 8,
+        "type": "string",
+        "inclusive": true,
+        "exact": false,
+        "message": "String must contain at least 8 character(s)",
+        "path": [
+            "password"
+        ]
+    }
+]

@@ -3,17 +3,32 @@ const description =
   "A sign up form with first name, last name, email and password inside a card. There's an option to sign up with GitHub and a link to login if you already have an account";
 const iframeHeight = "600px";
 const containerClass = "w-full h-screen flex items-center justify-center px-4";
-type Payload = {
-  name?: string;
-  email?: string;
-  password?: string;
+
+const form = ref<AuthForm>({
+  email: "",
+  password: "",
+  // name: undefined,
+});
+const error = ref<Partial<Record<keyof AuthForm, string>>>({});
+const onSubmit = async () => {
+  try {
+    const result = authSchema.safeParse(form.value);
+    if (!result.success) {
+      result.error.errors.forEach((e) => {
+        error.value[e.path[0] as keyof AuthForm] = e.message;
+      });
+      pr(error.value);
+      return;
+    }
+    $fetch("/api/auth/register", { method: "POST", body: result.data });
+  } catch (error) {
+    pr(error, "register.vue");
+  }
 };
-const form = ref<Payload>({});
-const submit = async () => {};
 </script>
 
 <template>
-  <form @submit.prevent="submit">
+  <form @submit.prevent="onSubmit">
     <Card class="mx-auto max-w-sm">
       <CardHeader>
         <CardTitle class="text-xl"> Sign Up </CardTitle>
