@@ -3,16 +3,34 @@ const description =
   "A login page with two columns. The first column has the login form with email and password. There's a Forgot your passwork link and a link to sign up if you do not have an account. The second column has a cover image.";
 const iframeHeight = "800px";
 const containerClass = "w-full h-full p-4 lg:p-0";
-type Payload = {
-  email?: string;
-  password?: string;
+
+const form = ref<AuthForm>({
+  email: "",
+  password: "",
+});
+const error = ref<Partial<Record<keyof AuthForm, string>>>({});
+const handleSubmit = async () => {
+  try {
+    const result = authSchema.safeParse(form.value);
+    if (!result.success) {
+      result.error.errors.forEach((e) => {
+        error.value[e.path[0] as keyof AuthForm] = e.message;
+      });
+      return;
+    }
+    const res = await $fetch("/api/auth/login", {
+      method: "POST",
+      body: result.data,
+    });
+    if (res) {
+      navigateTo("/");
+    }
+  } catch (error) {}
 };
-const form = ref<Payload>({});
-const submit = async () => {};
 </script>
 <template>
   <form
-    @submit.prevent="submit"
+    @submit.prevent="handleSubmit"
     class="w-full lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]"
   >
     <div class="flex items-center justify-center py-12">
@@ -32,6 +50,9 @@ const submit = async () => {};
               placeholder="m@example.com"
               v-model="form.email"
             />
+            <p v-if="error.email" class="text-xs text-red-500">
+              {{ error.email }}
+            </p>
           </div>
           <div class="grid gap-2">
             <div class="flex items-center">
@@ -44,6 +65,9 @@ const submit = async () => {};
               </a>
             </div>
             <Input id="password" type="password" v-model="form.password" />
+            <p v-if="error.password" class="text-xs text-red-500">
+              {{ error.password }}
+            </p>
           </div>
           <Button type="submit" class="w-full"> Login </Button>
           <AuthSocialButton title="Login With Github" icon="uil:github" />
