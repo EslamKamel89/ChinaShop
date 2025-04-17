@@ -8,7 +8,7 @@ const authenticate = () => {
 };
 </script>
 <template>
-  <Button @click="authenticate" variant="outline" class="w-full">
+  <Button type="button" @click="authenticate" variant="outline" class="w-full">
     <Icon :name="icon" style="color: black" /> {{ title }}
   </Button>
 </template>
