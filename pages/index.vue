@@ -1,5 +1,8 @@
 <script setup lang="ts">
-const { user } = useUserSession();
+const { user, clear } = useUserSession();
+definePageMeta({
+  middleware: ["auth"],
+});
 </script>
 <template>
   <div>
@@ -14,6 +17,9 @@ const { user } = useUserSession();
         <NuxtLink to="/auth/register"
           ><Button variant="link">Register</Button></NuxtLink
         >
+      </li>
+      <li>
+        <Button @click="clear" variant="link">Logout</Button>
       </li>
     </ul>
     <div>{{ user }}</div>
