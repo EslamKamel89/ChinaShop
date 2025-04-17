@@ -3,6 +3,10 @@ const { user, clear } = useUserSession();
 definePageMeta({
   middleware: ["auth"],
 });
+const handleLogout = async () => {
+  await clear();
+  window.location.assign("/auth/login");
+};
 </script>
 <template>
   <div>
@@ -19,7 +23,10 @@ definePageMeta({
         >
       </li>
       <li>
-        <Button @click="clear" variant="link">Logout</Button>
+        <NuxtLink to="/admin"><Button variant="link">Admin</Button></NuxtLink>
+      </li>
+      <li>
+        <Button @click="handleLogout" variant="link">Logout</Button>
       </li>
     </ul>
     <div>{{ user }}</div>

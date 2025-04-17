@@ -29,7 +29,8 @@ const handleSubmit = async () => {
       },
     });
     if (res) {
-      navigateTo("/");
+      // await new Promise((resolve) => setTimeout(resolve, 500));
+      await navigateTo("/");
     }
   } catch (error) {
     pr(error, "login.vue");

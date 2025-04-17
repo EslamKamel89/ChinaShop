@@ -35,9 +35,11 @@ export default defineEventHandler(async (e) => {
   }
   const transformedUser = santizeUser(user);
   if (transformedUser) {
+    await clearUserSession(e);
     await setUserSession(e, {
       user: transformedUser,
     });
+    await getUserSession(e);
   }
   return transformedUser;
 });
