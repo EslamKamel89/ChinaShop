@@ -6,3 +6,8 @@ export const authSchema = z.object({
   name: z.string().min(1).max(255).default("").optional(),
 });
 export type AuthForm = z.infer<typeof authSchema>;
+
+export const categorySchema = z.object({
+  name: z.string().min(1).max(255),
+});
+export type CategoryForm = z.infer<typeof categorySchema>;
