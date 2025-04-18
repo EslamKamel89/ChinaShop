@@ -1,9 +1,38 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const { user, clear } = useUserSession();
+const handleLogout = async () => {
+  await clear();
+  window.location.assign("/auth/login");
+};
+</script>
 <template>
   <div class="flex flex-col min-h-screen">
-    <div>
-      <NuxtLink to="/"><Button variant="link">Home</Button></NuxtLink>
-    </div>
+    <ul class="flex items-center">
+      <li>
+        <NuxtLink to="/"><Button variant="link">Home</Button></NuxtLink>
+      </li>
+      <li>
+        <NuxtLink to="/auth/login"
+          ><Button variant="link">Login</Button></NuxtLink
+        >
+      </li>
+      <li>
+        <NuxtLink to="/auth/register"
+          ><Button variant="link">Register</Button></NuxtLink
+        >
+      </li>
+      <li>
+        <NuxtLink to="/admin"><Button variant="link">Admin</Button></NuxtLink>
+      </li>
+      <li>
+        <Button @click="handleLogout" variant="link">Logout</Button>
+      </li>
+      <li>
+        <NuxtLink to="/admin/categories"
+          ><Button variant="link">Categories</Button></NuxtLink
+        >
+      </li>
+    </ul>
     <main class="flex-1"><slot /></main>
 
     <footer class="bg-white rounded-lg shadow-sm m-4 dark:bg-gray-800">
