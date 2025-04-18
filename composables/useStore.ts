@@ -18,8 +18,21 @@ export default () => {
     state.appError = error;
   };
   const showError = (error: APIError) => {
-    toast("Event has been created", {
-      description: "Sunday, December 03, 2023 at 9:00 AM",
+    toast(error.statusCode + "", {
+      description: error.message ?? error.statusMessage,
+      action: {
+        label: "Undo",
+        onClick: () => console.log("Undo"),
+      },
+    });
+  };
+  const showMessage = (content: {
+    title: string;
+    description?: string;
+    variant?: "default" | "destructive" | null | undefined;
+  }) => {
+    toast(content.title, {
+      description: content.description,
       action: {
         label: "Undo",
         onClick: () => console.log("Undo"),
@@ -31,5 +44,7 @@ export default () => {
     appError,
     toggleLoading,
     toggleError,
+    showError,
+    showMessage,
   };
 };
