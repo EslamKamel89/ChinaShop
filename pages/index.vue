@@ -1,6 +1,5 @@
 <script setup lang="ts">
 const { user, clear } = useUserSession();
-import { ClientOnly } from "#components";
 definePageMeta({
   middleware: ["auth"],
 });
@@ -31,8 +30,5 @@ const handleLogout = async () => {
       </li>
     </ul>
     <div>{{ user }}</div>
-    <ClientOnly>
-      <Toaster />
-    </ClientOnly>
   </div>
 </template>

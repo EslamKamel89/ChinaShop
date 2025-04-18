@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import { AlertCircle } from "lucide-vue-next";
+import handleApiError from "~/utils/error";
+
 const description =
   "A sign up form with first name, last name, email and password inside a card. There's an option to sign up with GitHub and a link to login if you already have an account";
 const iframeHeight = "600px";
@@ -10,6 +11,7 @@ const form = ref<AuthForm>({
   password: "",
   name: "",
 });
+const { isLoading, toggleLoading, showMessage, showError } = useStore();
 const error = ref<Partial<Record<keyof AuthForm, string>>>({});
 const serverError = ref<string>();
 const onSubmit = async () => {
@@ -22,18 +24,23 @@ const onSubmit = async () => {
       // pr(error.value);
       return;
     }
+    toggleLoading(true);
     const res = await $fetch("/api/auth/register", {
       method: "POST",
       body: result.data,
       onResponseError(e) {
         serverError.value = e.response.statusText;
+        showError(handleApiError(e));
       },
     });
     if (res) {
-      navigateTo("/");
+      await sleep(500);
+      await navigateTo("/");
     }
   } catch (error) {
     pr(error, "register.vue");
+  } finally {
+    toggleLoading(false);
   }
 };
 </script>
@@ -43,7 +50,8 @@ const onSubmit = async () => {
     <Card class="mx-auto max-w-sm">
       <CardHeader>
         <CardTitle class="text-xl"> Sign Up </CardTitle>
-        <Alert v-if="serverError" variant="destructive">
+        <!--
+       <Alert v-if="serverError" variant="destructive">
           <AlertCircle class="w-4 h-4" />
           <AlertTitle>Warning!</AlertTitle>
           <AlertDescription>
@@ -52,6 +60,7 @@ const onSubmit = async () => {
             </div>
           </AlertDescription>
         </Alert>
+      -->
         <CardDescription>
           Enter your information to create an account
         </CardDescription>
