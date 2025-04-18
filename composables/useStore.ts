@@ -18,12 +18,16 @@ export default () => {
     state.appError = error;
   };
   const showError = (error: APIError) => {
-    toast(error.statusCode + "", {
+    toast.error(error.statusCode + "", {
       description: error.message ?? error.statusMessage,
-      action: {
-        label: "Undo",
-        onClick: () => console.log("Undo"),
-      },
+      closeButton: true,
+      duration: 5000,
+      dismissible: true,
+      richColors: true,
+      // action: {
+      //   label: "Undo",
+      //   onClick: () => console.log("Undo"),
+      // },
     });
   };
   const showMessage = (content: {
@@ -33,10 +37,10 @@ export default () => {
   }) => {
     toast(content.title, {
       description: content.description,
-      action: {
-        label: "Undo",
-        onClick: () => console.log("Undo"),
-      },
+      // action: {
+      //   label: "Undo",
+      //   onClick: () => console.log("Undo"),
+      // },
     });
   };
   return {

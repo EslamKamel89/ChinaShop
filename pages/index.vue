@@ -7,6 +7,7 @@ const handleLogout = async () => {
   await clear();
   window.location.assign("/auth/login");
 };
+const { showError } = useStore();
 </script>
 <template>
   <div>
