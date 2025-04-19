@@ -2,7 +2,7 @@
   <div class="flex items-center justify-between">
     <Heading title="Categories" description="Manage Categories">
       <template #action>
-        <NuxtLink to="/">
+        <NuxtLink to="/admin/categories/1">
           <Button>
             <Icon name="lucide:plus" />
             <span>Add New</span>

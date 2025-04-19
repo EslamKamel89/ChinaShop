@@ -7,19 +7,21 @@ const props = defineProps<{
 const emits = defineEmits<{
   onClose: [];
 }>();
-const isOpen = computed({
-  get() {
-    return props.isModalVisible;
-  },
-  set(value) {
-    emits("onClose");
-  },
-});
+
+const isOpenModel = ref(props.isModalVisible);
+watch(
+  () => props.isModalVisible,
+  () => {
+    isOpenModel.value = props.isModalVisible;
+  }
+);
 </script>
 
 <template>
-  <Dialog :isOpen="isOpen" @update:open="(val) => emits('onClose')">
-    <DialogTrigger> Edit Profile </DialogTrigger>
+  <Dialog v-model:open="isOpenModel" @update:open="(val) => emits('onClose')">
+    <!--
+     <DialogTrigger> Edit Profile </DialogTrigger>
+  -->
     <DialogContent>
       <DialogHeader>
         <DialogTitle v-if="title">{{ title }}</DialogTitle>

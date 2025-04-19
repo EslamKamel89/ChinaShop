@@ -1,16 +1,18 @@
 import { toast } from "vue-sonner";
 import type { APIError } from "~/types";
 type StateType = {
+  isModalVisible: boolean;
   isLoading: boolean;
   appError: APIError | null;
 };
 const state = reactive<StateType>({
+  isModalVisible: false,
   isLoading: false,
   appError: null,
 });
 
 export default () => {
-  const { isLoading, appError } = toRefs(state);
+  const { isLoading, appError, isModalVisible } = toRefs(state);
   const toggleLoading = (v: boolean) => {
     state.isLoading = v;
   };
@@ -29,6 +31,9 @@ export default () => {
       //   onClick: () => console.log("Undo"),
       // },
     });
+  };
+  const toggleModal = (v: boolean) => {
+    state.isModalVisible = v;
   };
   const showMessage = (content: {
     title: string;
@@ -50,5 +55,7 @@ export default () => {
     toggleError,
     showError,
     showMessage,
+    isModalVisible,
+    toggleModal,
   };
 };

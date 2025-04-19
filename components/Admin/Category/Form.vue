@@ -1,39 +1,3 @@
-<template>
-  <div class="flex flex-col space-y-2">
-    <Heading :title :description>
-      <template #action>
-        <NuxtLink to="/" v-if="isEditing">
-          <Button variant="destructive" size="sm">
-            <Icon name="lucide:trash" />
-          </Button>
-        </NuxtLink>
-      </template>
-    </Heading>
-    <Separator class="my-2" />
-    <form @submit.prevent="onSubmit">
-      <div class="md:grid md:grid-cols-3 gap-8">
-        <FormField v-slot="{ componentField }" name="name">
-          <FormItem>
-            <FormLabel>Name</FormLabel>
-            <FormControl>
-              <Input
-                placeholder="Category Name"
-                v-bind="componentField"
-                :disabled="isLoading"
-              />
-            </FormControl>
-            <FormDescription />
-            <FormMessage />
-          </FormItem>
-        </FormField>
-      </div>
-      <Button type="submit" :disabled="isLoading" class="ml-auto">{{
-        action
-      }}</Button>
-    </form>
-  </div>
-</template>
-
 <script setup lang="ts">
 import { toTypedSchema } from "@vee-validate/zod";
 import { useForm } from "vee-validate";
@@ -45,8 +9,15 @@ const toastMessage = ref("Category Updated");
 const action = ref("Save Changes");
 const isEditing = ref(true);
 const route = useRoute();
-const { isLoading, toggleLoading, showError, showMessage, toggleError } =
-  useStore();
+const {
+  isLoading,
+  toggleLoading,
+  showError,
+  showMessage,
+  toggleError,
+  toggleModal,
+  isModalVisible,
+} = useStore();
 const { data: currentCategory } = await useFetch(
   `/api/admin/categories/${route.params.categoryId}`
 );
@@ -72,4 +43,61 @@ const onSubmit = handleSubmit(async (values) => {
     toggleLoading(false);
   }
 });
+const deleteCategory = async () => {
+  try {
+    toggleLoading(true);
+    pr("Delete Category");
+    showMessage({ title: "Category Deleted" });
+  } catch (error) {
+    const err = handleApiError(error);
+    showError(err);
+  } finally {
+    toggleLoading(false);
+  }
+};
 </script>
+
+<template>
+  <div class="flex flex-col space-y-2">
+    <Heading :title :description>
+      <template #action>
+        <div v-if="isEditing">
+          <Button
+            type="button"
+            @click="toggleModal(true)"
+            variant="destructive"
+            size="sm"
+          >
+            <Icon name="lucide:trash" />
+          </Button>
+        </div>
+      </template>
+    </Heading>
+    <Separator class="my-2" />
+    <form @submit.prevent="onSubmit">
+      <div class="md:grid md:grid-cols-3 gap-8">
+        <FormField v-slot="{ componentField }" name="name">
+          <FormItem>
+            <FormLabel>Name</FormLabel>
+            <FormControl>
+              <Input
+                placeholder="Category Name"
+                v-bind="componentField"
+                :disabled="isLoading"
+              />
+            </FormControl>
+            <FormDescription />
+            <FormMessage />
+          </FormItem>
+        </FormField>
+      </div>
+      <Button type="submit" :disabled="isLoading" class="ml-auto">{{
+        action
+      }}</Button>
+    </form>
+    <SharedAlertModal
+      v-if="isModalVisible"
+      @on-confirm="deleteCategory"
+    ></SharedAlertModal>
+  </div>
+</template>
