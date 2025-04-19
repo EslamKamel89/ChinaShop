@@ -27,12 +27,13 @@ const {
   toggleModal,
   isModalVisible,
 } = useStore();
-const { data: currentCategory } = await useFetch(
-  `/api/admin/categories/${route.params.categoryId}`
+const { data: currentCategory, execute: fetchCategory } = await useFetch(
+  `/api/admin/categories/${route.params.categoryId}`,
+  { immediate: false }
 );
 const { handleSubmit, errors } = useForm({
   validationSchema: toTypedSchema(categorySchema),
-  initialValues: currentCategory.value || { name: "" },
+  initialValues: currentCategory.value,
 });
 const onSubmit = handleSubmit(async (values) => {
   try {
@@ -68,6 +69,11 @@ const deleteCategory = async () => {
     toggleLoading(false);
   }
 };
+onMounted(() => {
+  if (props.isEditing) {
+    fetchCategory();
+  }
+});
 </script>
 
 <template>
