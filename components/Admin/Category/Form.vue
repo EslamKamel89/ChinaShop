@@ -10,7 +10,7 @@
       </template>
     </Heading>
     <Separator class="my-2" />
-    <form>
+    <form @submit.prevent="onSubmit">
       <div class="md:grid md:grid-cols-3 gap-8">
         <FormField v-slot="{ componentField }" name="name">
           <FormItem>
@@ -38,6 +38,7 @@
 import { toTypedSchema } from "@vee-validate/zod";
 import { useForm } from "vee-validate";
 import Heading from "~/components/ui/Heading.vue";
+import handleApiError from "~/utils/error";
 const title = ref("Edit Category");
 const description = ref("Edit Category");
 const toastMessage = ref("Category Updated");
@@ -55,8 +56,20 @@ const { handleSubmit, errors } = useForm({
 });
 const onSubmit = handleSubmit(async (values) => {
   try {
+    toggleLoading(true);
+    if (isEditing.value) {
+      pr(values, "handle submit - edit mode - Form.vue");
+    } else {
+      pr(values, "handle submit - create mode - Form.vue");
+    }
+    showMessage({ title: title.value + " Success" });
+    //TODO: Refersh data
+    await navigateTo("/admin/categories");
   } catch (error) {
+    const err = handleApiError(error);
+    showError(err);
   } finally {
+    toggleLoading(false);
   }
 });
 </script>
