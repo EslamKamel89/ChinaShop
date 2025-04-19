@@ -3,11 +3,20 @@ import { toTypedSchema } from "@vee-validate/zod";
 import { useForm } from "vee-validate";
 import Heading from "~/components/ui/Heading.vue";
 import handleApiError from "~/utils/error";
-const title = ref("Edit Category");
-const description = ref("Edit Category");
-const toastMessage = ref("Category Updated");
+const props = defineProps<{
+  isEditing: boolean;
+}>();
+const title = computed(() =>
+  props.isEditing ? "Edit Category" : "Create Category"
+);
+const description = computed(() =>
+  props.isEditing ? "Edit Category" : "Create Category"
+);
+const toastMessage = computed(() =>
+  props.isEditing ? "Category Updated" : "Category Created"
+);
 const action = ref("Save Changes");
-const isEditing = ref(true);
+// const isEditing = ref(false);
 const route = useRoute();
 const {
   isLoading,
@@ -28,10 +37,14 @@ const { handleSubmit, errors } = useForm({
 const onSubmit = handleSubmit(async (values) => {
   try {
     toggleLoading(true);
-    if (isEditing.value) {
+    if (props.isEditing) {
       pr(values, "handle submit - edit mode - Form.vue");
     } else {
-      pr(values, "handle submit - create mode - Form.vue");
+      const category = await $fetch("/api/admin/categories", {
+        method: "POST",
+        body: values,
+      });
+      pr(category, "handle submit - create mode - Form.vue");
     }
     showMessage({ title: title.value + " Success" });
     //TODO: Refersh data
