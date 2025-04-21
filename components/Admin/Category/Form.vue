@@ -6,17 +6,17 @@ import handleApiError from "~/utils/error";
 const props = defineProps<{
   isEditing: boolean;
 }>();
+const editMode = ref(props.isEditing);
 const title = computed(() =>
-  props.isEditing ? "Edit Category" : "Create Category"
+  editMode.value ? "Edit Category" : "Create Category"
 );
 const description = computed(() =>
-  props.isEditing ? "Edit Category" : "Create Category"
+  editMode.value ? "Edit Category" : "Create Category"
 );
 const toastMessage = computed(() =>
-  props.isEditing ? "Category Updated" : "Category Created"
+  editMode.value ? "Category Updated" : "Category Created"
 );
 const action = ref("Save Changes");
-// const isEditing = ref(false);
 const route = useRoute();
 const {
   isLoading,
@@ -38,7 +38,7 @@ const { handleSubmit, errors } = useForm({
 const onSubmit = handleSubmit(async (values) => {
   try {
     toggleLoading(true);
-    if (props.isEditing) {
+    if (editMode.value) {
       pr(values, "handle submit - edit mode - Form.vue");
     } else {
       const category = await $fetch("/api/admin/categories", {
@@ -70,8 +70,12 @@ const deleteCategory = async () => {
   }
 };
 onMounted(() => {
-  if (props.isEditing) {
-    fetchCategory();
+  if (editMode.value) {
+    fetchCategory().then(() => {
+      if (!currentCategory.value) {
+        editMode.value = false;
+      }
+    });
   }
 });
 </script>
@@ -80,7 +84,7 @@ onMounted(() => {
   <div class="flex flex-col space-y-2">
     <Heading :title :description>
       <template #action>
-        <div v-if="isEditing">
+        <div v-if="editMode">
           <Button
             type="button"
             @click="toggleModal(true)"
@@ -103,6 +107,7 @@ onMounted(() => {
                 placeholder="Category Name"
                 v-bind="componentField"
                 :disabled="isLoading"
+                v-bind:model-value="currentCategory?.name"
               />
             </FormControl>
             <FormDescription />
