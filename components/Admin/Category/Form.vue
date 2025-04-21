@@ -68,6 +68,7 @@ const deleteCategory = async () => {
       showMessage({ title: "Category Deleted" });
       await navigateTo("/admin/categories");
     }
+    ``;
   } catch (error) {
     const err = handleApiError(error);
     showError(err);
