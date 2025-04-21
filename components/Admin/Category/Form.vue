@@ -60,8 +60,14 @@ const onSubmit = handleSubmit(async (values) => {
 const deleteCategory = async () => {
   try {
     toggleLoading(true);
-    pr("Delete Category");
-    showMessage({ title: "Category Deleted" });
+    const res = await $fetch(
+      `/api/admin/categories/${route.params.categoryId}`,
+      { method: "DELETE" }
+    );
+    if (res) {
+      showMessage({ title: "Category Deleted" });
+      await navigateTo("/admin/categories");
+    }
   } catch (error) {
     const err = handleApiError(error);
     showError(err);
