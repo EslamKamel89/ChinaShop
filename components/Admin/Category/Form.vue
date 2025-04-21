@@ -39,7 +39,11 @@ const onSubmit = handleSubmit(async (values) => {
   try {
     toggleLoading(true);
     if (editMode.value) {
-      pr(values, "handle submit - edit mode - Form.vue");
+      const category = await $fetch(
+        `/api/admin/categories/${route.params.categoryId}`,
+        { method: "PATCH", body: values }
+      );
+      pr(category, "handle submit - edit mode - Form.vue");
     } else {
       const category = await $fetch("/api/admin/categories", {
         method: "POST",
