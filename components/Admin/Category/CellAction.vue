@@ -8,12 +8,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { MoreHorizontal } from "lucide-vue-next";
+import { Copy, MoreHorizontal, Pencil, Trash2 } from "lucide-vue-next";
+import handleApiError from "~/utils/error";
 import type { Category } from "./column";
-defineProps<{
+const props = defineProps<{
   category: Category;
 }>();
-const { showMessage } = useStore();
+const { showMessage, toggleLoading, toggleModal, isModalVisible } = useStore();
 
 function copy(id: string) {
   navigator.clipboard.writeText(id);
@@ -23,6 +24,25 @@ function copy(id: string) {
     variant: "default",
   });
 }
+const deleteCategory = async () => {
+  try {
+    toggleLoading(true);
+    const res = await $fetch(`/api/admin/categories/${props.category.id}`, {
+      method: "DELETE",
+    });
+    if (res) {
+      showMessage({ title: "Category Deleted" });
+      refreshNuxtData("categories");
+      await navigateTo("/admin/categories");
+    }
+    ``;
+  } catch (error) {
+    const err = handleApiError(error);
+    showError(err);
+  } finally {
+    toggleLoading(false);
+  }
+};
 </script>
 
 <template>
@@ -36,9 +56,24 @@ function copy(id: string) {
     <DropdownMenuContent align="end">
       <DropdownMenuLabel>Actions</DropdownMenuLabel>
       <DropdownMenuItem @click="copy(category.id)">
-        Copy Category ID
+        <Copy /> Copy Category ID
       </DropdownMenuItem>
       <DropdownMenuSeparator />
+      <DropdownMenuItem variant="default">
+        <NuxtLink
+          :to="`/admin/categories/${props.category.id}`"
+          class="flex gap-x-3 items-center"
+        >
+          <Pencil /> <span>Edit</span>
+        </NuxtLink>
+      </DropdownMenuItem>
+      <DropdownMenuItem @click="toggleModal(true)" variant="destructive">
+        <Trash2 /> Delete
+      </DropdownMenuItem>
     </DropdownMenuContent>
   </DropdownMenu>
+  <SharedAlertModal
+    v-if="isModalVisible"
+    @on-confirm="deleteCategory"
+  ></SharedAlertModal>
 </template>
