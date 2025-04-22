@@ -10,13 +10,18 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { MoreHorizontal } from "lucide-vue-next";
 import type { Category } from "./column";
-
 defineProps<{
   category: Category;
 }>();
+const { showMessage } = useStore();
 
 function copy(id: string) {
   navigator.clipboard.writeText(id);
+  showMessage({
+    title: "Copied!",
+    description: `ID:${id} is copied successfully`,
+    variant: "default",
+  });
 }
 </script>
 
