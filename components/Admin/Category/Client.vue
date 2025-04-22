@@ -12,10 +12,16 @@
         </template>
       </Heading>
     </div>
+    <DataTable
+      v-if="status == 'success'"
+      :columns="columns"
+      :data="categories ?? []"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
+import { columns } from "@/components/Admin/Category/column";
 import Heading from "~/components/ui/Heading.vue";
-const categories = await $fetch("/api/admin/categories");
+const { data: categories, status } = await useFetch("/api/admin/categories");
 </script>

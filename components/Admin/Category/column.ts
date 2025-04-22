@@ -1,3 +1,4 @@
+import CallAction from "@/components/Admin/Category/CellAction.vue";
 import type { ColumnDef } from "@tanstack/vue-table";
 import { h } from "vue";
 export interface Category {
@@ -8,19 +9,33 @@ export interface Category {
 export const columns: ColumnDef<Category>[] = [
   {
     accessorKey: "name",
-    header: () => h("div", { class: "text-right" }, "Name"),
+    header: () => h("div", { class: "text-right font-bold" }, "Name"),
     cell: ({ row }) => {
-      //   const amount = Number.parseFloat(row.getValue("amount"));
-      //   const formatted = new Intl.NumberFormat("en-US", {
-      //     style: "currency",
-      //     currency: "USD",
-      //   }).format(amount);
-
       return h(
         "div",
         { class: "text-right font-medium" },
         row.getValue("name")
       );
+    },
+  },
+  {
+    accessorKey: "createdAt",
+    header: () => h("div", { class: "text-right font-bold" }, "Created At"),
+    cell: ({ row }) => {
+      return h(
+        "div",
+        { class: "text-right font-medium" },
+        row.getValue("createdAt")
+      );
+    },
+  },
+  {
+    id: "actions",
+    // accessorKey: "actions",
+    // header: () => h("div", { class: "text-right" }, "Actions"),
+    cell: ({ row }) => {
+      const category = row.original;
+      return h("div", { class: "relative" }, h(CallAction, { category }));
     },
   },
 ];
