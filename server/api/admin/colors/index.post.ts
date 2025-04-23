@@ -1,5 +1,5 @@
 import db from "~/utils/db";
-import { ColorSchema } from "~/utils/validation";
+import { colorSchema } from "~/utils/validation";
 
 export default defineEventHandler(async (event) => {
   const session = await requireUserSession(event);
@@ -10,7 +10,7 @@ export default defineEventHandler(async (event) => {
     });
   }
   const { name } = await readValidatedBody(event, (body) =>
-    ColorSchema.parse(body)
+    colorSchema.parse(body)
   );
   const color = await db.color.create({
     data: {

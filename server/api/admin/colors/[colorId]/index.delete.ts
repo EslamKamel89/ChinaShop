@@ -8,10 +8,10 @@ export default defineEventHandler(async (event) => {
       statusMessage: "Unathorized, you dont have ADMIN access",
     });
   }
-  const categoryId = event.context.params?.categoryId;
-  if (!categoryId) {
-    throw createError({ statusCode: 404, statusMessage: "Category not found" });
+  const colorId = event.context.params?.colorId;
+  if (!colorId) {
+    throw createError({ statusCode: 404, statusMessage: "Color not found" });
   }
-  const category = await db.category.delete({ where: { id: categoryId } });
-  return category;
+  const color = await db.color.delete({ where: { id: colorId } });
+  return color;
 });

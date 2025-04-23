@@ -31,7 +31,7 @@ const { data: currentColor, execute: fetchColor } = await useFetch(
   { immediate: false }
 );
 const { handleSubmit, errors } = useForm({
-  validationSchema: toTypedSchema(ColorSchema),
+  validationSchema: toTypedSchema(colorSchema),
   initialValues: currentColor.value,
 });
 const onSubmit = handleSubmit(async (values) => {
@@ -117,6 +117,21 @@ onMounted(() => {
                 v-bind="componentField"
                 :disabled="isLoading"
                 v-bind:model-value="currentColor?.name"
+              />
+            </FormControl>
+            <FormDescription />
+            <FormMessage />
+          </FormItem>
+        </FormField>
+        <FormField v-slot="{ componentField }" name="value">
+          <FormItem>
+            <FormLabel>Value</FormLabel>
+            <FormControl>
+              <Input
+                placeholder="Color Value"
+                v-bind="componentField"
+                :disabled="isLoading"
+                v-bind:model-value="currentColor?.value"
               />
             </FormControl>
             <FormDescription />

@@ -4,6 +4,7 @@ import { h } from "vue";
 export interface Color {
   id: string;
   name: string;
+  value: string;
   createdAt: string;
 }
 export const columns: ColumnDef<Color>[] = [

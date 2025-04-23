@@ -1,5 +1,5 @@
 import db from "~/utils/db";
-import { categorySchema } from "~/utils/validation";
+import { colorSchema } from "~/utils/validation";
 
 export default defineEventHandler(async (event) => {
   const session = await requireUserSession(event);
@@ -9,16 +9,16 @@ export default defineEventHandler(async (event) => {
       statusMessage: "Unauthorized, You don't have ADMIN access",
     });
   }
-  const { name } = await readValidatedBody(event, (body) => {
-    return categorySchema.parse(body);
+  const { name, value } = await readValidatedBody(event, (body) => {
+    return colorSchema.parse(body);
   });
-  const categoryId = event.context.params?.categoryId;
-  if (!categoryId) {
-    throw createError({ statusCode: 404, statusMessage: "Category not found" });
+  const colorId = event.context.params?.colorId;
+  if (!colorId) {
+    throw createError({ statusCode: 404, statusMessage: "Color not found" });
   }
-  const category = await db.category.update({
-    where: { id: categoryId },
-    data: { name },
+  const color = await db.color.update({
+    where: { id: colorId },
+    data: { name, value },
   });
-  return category;
+  return color;
 });

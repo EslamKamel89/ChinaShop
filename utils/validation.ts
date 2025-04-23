@@ -12,7 +12,14 @@ export const categorySchema = z.object({
 });
 export type CategoryForm = z.infer<typeof categorySchema>;
 
-export const ColorSchema = z.object({
-  name: z.string().min(1).max(255),
+export const colorSchema = z.object({
+  name: z
+    .string()
+    .min(1, { message: "color is required" })
+    .max(255, { message: "Color can't exceed 255 chars" }),
+  value: z
+    .string()
+    .min(1, { message: "color value is required" })
+    .max(10, { message: "Color value can't exceed 10 chars" }),
 });
-export type ColorForm = z.infer<typeof ColorSchema>;
+export type ColorForm = z.infer<typeof colorSchema>;
