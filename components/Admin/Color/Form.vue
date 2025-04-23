@@ -107,7 +107,7 @@ onMounted(() => {
     </Heading>
     <Separator class="my-2" />
     <form @submit.prevent="onSubmit">
-      <div class="md:grid md:grid-cols-3 gap-8">
+      <div class="md:grid md:grid-cols-3 space-y-4 md:space-y-0 md:space-x-4">
         <FormField v-slot="{ componentField }" name="name">
           <FormItem>
             <FormLabel>Name</FormLabel>

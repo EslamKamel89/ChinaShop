@@ -9,14 +9,14 @@ export default defineEventHandler(async (event) => {
       statusMessage: "Unauthorized, You don't have ADMIN access",
     });
   }
-  const { name } = await readValidatedBody(event, (body) =>
+  const { name, value } = await readValidatedBody(event, (body) =>
     colorSchema.parse(body)
   );
   const color = await db.color.create({
     data: {
       name,
       userId: session.user.id,
-      value: "test value",
+      value,
     },
   });
   return { color };

@@ -20,6 +20,17 @@ export const columns: ColumnDef<Color>[] = [
     },
   },
   {
+    accessorKey: "value",
+    header: () => h("div", { class: "text-right font-bold" }, "Color Value"),
+    cell: ({ row }) => {
+      return h(
+        "div",
+        { class: "text-right font-medium" },
+        row.getValue("value")
+      );
+    },
+  },
+  {
     accessorKey: "createdAt",
     header: () => h("div", { class: "text-right font-bold" }, "Created At"),
     cell: ({ row }) => {

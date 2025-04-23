@@ -21,5 +21,6 @@ export const colorSchema = z.object({
     .string()
     .min(1, { message: "color value is required" })
     .max(10, { message: "Color value can't exceed 10 chars" }),
+  // .default("#000000"),
 });
 export type ColorForm = z.infer<typeof colorSchema>;
