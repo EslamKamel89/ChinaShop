@@ -11,3 +11,8 @@ export const categorySchema = z.object({
   name: z.string().min(1).max(255),
 });
 export type CategoryForm = z.infer<typeof categorySchema>;
+
+export const ColorSchema = z.object({
+  name: z.string().min(1).max(255),
+});
+export type ColorForm = z.infer<typeof ColorSchema>;
