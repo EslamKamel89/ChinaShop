@@ -1,7 +1,10 @@
 <script setup lang="ts">
-const { isModalVisible, toggleModal, isLoading } = useStore();
+const { toggleModal, isLoading } = useStore();
 const emits = defineEmits<{
   onConfirm: [];
+}>();
+const props = defineProps<{
+  isModalVisible: boolean;
 }>();
 </script>
 <template>

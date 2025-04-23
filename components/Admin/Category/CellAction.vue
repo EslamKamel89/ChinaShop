@@ -74,6 +74,7 @@ const deleteCategory = async () => {
   </DropdownMenu>
   <SharedAlertModal
     v-if="isModalVisible"
+    :is-modal-visible="isModalVisible"
     @on-confirm="deleteCategory"
   ></SharedAlertModal>
 </template>

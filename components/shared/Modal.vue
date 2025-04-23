@@ -12,7 +12,7 @@ const isOpenModel = ref(props.isModalVisible);
 watch(
   () => props.isModalVisible,
   () => {
-    isOpenModel.value = props.isModalVisible;
+    isOpenModel.value = pr(props.isModalVisible, "props.isModalVisible");
   }
 );
 </script>
