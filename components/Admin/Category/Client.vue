@@ -16,6 +16,8 @@
       v-if="status == 'success'"
       :columns="columns"
       :data="categories ?? []"
+      column-to-search="name"
+      search-placeholder="Search by category name"
     />
   </div>
 </template>

@@ -8,19 +8,23 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import type { ColumnDef } from "@tanstack/vue-table";
-
 import {
   FlexRender,
   getCoreRowModel,
+  getFilteredRowModel,
   getPaginationRowModel,
   useVueTable,
+  type ColumnFiltersState,
 } from "@tanstack/vue-table";
+import { valueUpdater } from "./ui/table/utils";
 
 const props = defineProps<{
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  searchPlaceholder: string;
+  columnToSearch: string;
 }>();
-
+const columnFilters = ref<ColumnFiltersState>([]);
 const table = useVueTable({
   get data() {
     return props.data;
@@ -30,11 +34,29 @@ const table = useVueTable({
   },
   getCoreRowModel: getCoreRowModel(),
   getPaginationRowModel: getPaginationRowModel(),
+  onColumnFiltersChange: (updaterOrValue) =>
+    valueUpdater(updaterOrValue, columnFilters),
+  getFilteredRowModel: getFilteredRowModel(),
+  state: {
+    get columnFilters() {
+      return columnFilters.value;
+    },
+  },
 });
 </script>
 
 <template>
   <div class="border rounded-md">
+    <div class="flex items-center py-4">
+      <Input
+        class="max-w-sm"
+        :placeholder="searchPlaceholder"
+        :model-value="table.getColumn(columnToSearch)?.getFilterValue() as string"
+        @update:model-value="
+          table.getColumn(columnToSearch)?.setFilterValue($event)
+        "
+      />
+    </div>
     <Table>
       <TableHeader>
         <TableRow
