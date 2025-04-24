@@ -27,5 +27,11 @@ import { columns } from "@/components/Admin/Category/column";
 import Heading from "~/components/ui/Heading.vue";
 const { data: categories, status } = await useFetch("/api/admin/categories", {
   key: "categories",
+  transform: (categories) => {
+    return categories.map((category) => ({
+      ...category,
+      createdAt: formatDateInTable(category.createdAt),
+    }));
+  },
 });
 </script>

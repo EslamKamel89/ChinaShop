@@ -25,7 +25,14 @@
 <script setup lang="ts">
 import { columns } from "@/components/Admin/Color/column";
 import Heading from "~/components/ui/Heading.vue";
+
 const { data: colors, status } = await useFetch("/api/admin/colors", {
   key: "colors",
+  transform: (colors) => {
+    return colors.map((color) => ({
+      ...color,
+      createdAt: formatDateInTable(color.createdAt),
+    }));
+  },
 });
 </script>
