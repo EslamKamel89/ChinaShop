@@ -37,3 +37,14 @@ export const sizeSchema = z.object({
   // .default("#000000"),
 });
 export type SizeForm = z.infer<typeof sizeSchema>;
+
+export const productSchema = z.object({
+  name: z.string().min(1),
+  categoryId: z.string().min(1),
+  price: z.number(),
+  isFeatured: z.boolean(),
+  isArchived: z.boolean(),
+  sizeId: z.string().min(1),
+  colorId: z.string().min(1),
+});
+export type ProductForm = z.infer<typeof productSchema>;
