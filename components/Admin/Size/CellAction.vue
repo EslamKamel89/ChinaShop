@@ -55,12 +55,12 @@ const deleteSize = async () => {
     <DropdownMenuContent align="end">
       <DropdownMenuLabel>Actions</DropdownMenuLabel>
       <DropdownMenuItem @click="copy(size.id)">
-        <Copy /> Copy Color ID
+        <Copy /> Copy Size ID
       </DropdownMenuItem>
       <DropdownMenuSeparator />
       <DropdownMenuItem variant="default">
         <NuxtLink
-          :to="`/admin/colors/${props.size.id}`"
+          :to="`/admin/sizes/${props.size.id}`"
           class="flex gap-x-3 items-center"
         >
           <Pencil /> <span>Edit</span>

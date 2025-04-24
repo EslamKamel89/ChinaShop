@@ -135,7 +135,6 @@ onMounted(() => {
                 v-bind="componentField"
                 :disabled="isLoading"
                 v-bind:model-value="currentSize?.value"
-                class="w-24 rounded-xl"
               />
             </FormControl>
             <FormDescription />
