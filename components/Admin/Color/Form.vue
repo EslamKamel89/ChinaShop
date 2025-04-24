@@ -32,7 +32,10 @@ const { data: currentColor, execute: fetchColor } = await useFetch(
 );
 const { handleSubmit, errors } = useForm({
   validationSchema: toTypedSchema(colorSchema),
-  initialValues: currentColor.value,
+  initialValues: {
+    ...currentColor.value,
+    value: currentColor.value?.value ?? "#000000",
+  },
 });
 const onSubmit = handleSubmit(async (values) => {
   try {
@@ -87,6 +90,14 @@ onMounted(() => {
     });
   }
 });
+const handleCopy = (color: string) => {
+  navigator.clipboard.writeText(color);
+  showMessage({
+    title: "Copied!",
+    description: `Color:${color} is copied successfully`,
+    variant: "default",
+  });
+};
 </script>
 
 <template>
@@ -128,10 +139,12 @@ onMounted(() => {
             <FormLabel>Value</FormLabel>
             <FormControl>
               <Input
+                type="color"
                 placeholder="Color Value"
                 v-bind="componentField"
                 :disabled="isLoading"
-                v-bind:model-value="currentColor?.value"
+                v-bind:model-value="currentColor?.value ?? '#000000'"
+                class="w-24 rounded-xl"
               />
             </FormControl>
             <FormDescription />

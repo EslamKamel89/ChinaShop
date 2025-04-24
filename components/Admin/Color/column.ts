@@ -26,8 +26,8 @@ export const columns: ColumnDef<Color>[] = [
     cell: ({ row }) => {
       return h(
         Value,
-        { colorCode: row.getValue("value") as string },
-        row.getValue("value")
+        { colorCode: row.getValue("value") as string }
+        // row.getValue("value")
       );
     },
   },
