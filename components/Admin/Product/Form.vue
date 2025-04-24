@@ -36,6 +36,7 @@ const { handleSubmit, errors } = useForm({
   initialValues: currentProduct.value,
 });
 const onSubmit = handleSubmit(async (values) => {
+  pr("onSubmit");
   try {
     toggleLoading(true);
     if (editMode.value) {
@@ -79,6 +80,15 @@ const deleteProduct = async () => {
     toggleLoading(false);
   }
 };
+const { data: categories } = await useFetch("/api/admin/categories", {
+  key: "categories",
+});
+const { data: sizes } = await useFetch("/api/admin/sizes", {
+  key: "sizes",
+});
+const { data: colors } = await useFetch("/api/admin/colors", {
+  key: "colors",
+});
 onMounted(() => {
   if (editMode.value) {
     fetchProduct().then(() => {
@@ -108,7 +118,7 @@ onMounted(() => {
     </Heading>
     <Separator class="my-2" />
     <form @submit.prevent="onSubmit">
-      <div class="md:grid md:grid-cols-3 gap-8">
+      <div class="md:grid md:grid-cols-2 gap-8 space-y-3 md:space-y-0">
         <FormField v-slot="{ componentField }" name="name">
           <FormItem>
             <FormLabel>Name</FormLabel>
@@ -124,8 +134,138 @@ onMounted(() => {
             <FormMessage />
           </FormItem>
         </FormField>
+        <FormField v-slot="{ componentField }" name="price">
+          <FormItem>
+            <FormLabel>Price</FormLabel>
+            <FormControl>
+              <Input
+                type="number"
+                placeholder="Product Name"
+                v-bind="componentField"
+                :disabled="isLoading"
+                v-bind:model-value="currentProduct?.price"
+              />
+            </FormControl>
+            <FormDescription />
+            <FormMessage />
+          </FormItem>
+        </FormField>
+        <FormField v-slot="{ componentField }" name="categoryId">
+          <FormItem>
+            <FormLabel>Category</FormLabel>
+            <Select v-bind="componentField">
+              <FormControl class="w-full">
+                <SelectTrigger>
+                  <SelectValue placeholder="Select Category" />
+                </SelectTrigger>
+              </FormControl>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectItem
+                    v-for="category in categories"
+                    :key="category.id"
+                    :value="category.id"
+                  >
+                    {{ category.name }}
+                  </SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+            <FormDescription />
+            <FormMessage />
+          </FormItem>
+        </FormField>
+        <FormField v-slot="{ componentField }" name="sizeId">
+          <FormItem>
+            <FormLabel>Size</FormLabel>
+            <Select v-bind="componentField">
+              <FormControl class="w-full">
+                <SelectTrigger>
+                  <SelectValue placeholder="Select Size" />
+                </SelectTrigger>
+              </FormControl>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectItem
+                    v-for="size in sizes"
+                    :key="size.id"
+                    :value="size.id"
+                  >
+                    {{ size.name }}
+                  </SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+            <FormDescription />
+            <FormMessage />
+          </FormItem>
+        </FormField>
+        <FormField v-slot="{ componentField }" name="colorId">
+          <FormItem>
+            <FormLabel>Color</FormLabel>
+            <Select v-bind="componentField">
+              <FormControl class="w-full">
+                <SelectTrigger>
+                  <SelectValue placeholder="Select Color" />
+                </SelectTrigger>
+              </FormControl>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectItem
+                    v-for="color in colors"
+                    :key="color.id"
+                    :value="color.id"
+                  >
+                    {{ color.name }}
+                  </SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+            <FormDescription />
+            <FormMessage />
+          </FormItem>
+        </FormField>
+        <div></div>
+        <FormField
+          v-slot="{ value, handleChange }"
+          type="checkbox"
+          name="isFeatured"
+        >
+          <FormItem class="flex flex-row items-center gap-x-3 space-y-0">
+            <FormControl>
+              <Checkbox
+                :model-value="value"
+                @update:model-value="handleChange"
+              />
+            </FormControl>
+            <div class="space-y-1 leading-none">
+              <FormLabel>Featured</FormLabel>
+              <!--<FormDescription> is this product featured? </FormDescription>-->
+              <FormMessage />
+            </div>
+          </FormItem>
+        </FormField>
+        <FormField
+          v-slot="{ value, handleChange }"
+          type="checkbox"
+          name="isArchived"
+        >
+          <FormItem class="flex flex-row items-center gap-x-3 space-y-0">
+            <FormControl>
+              <Checkbox
+                :model-value="value"
+                @update:model-value="handleChange"
+              />
+            </FormControl>
+            <div class="space-y-1 leading-none">
+              <FormLabel>Archived</FormLabel>
+              <!--<FormDescription> is this product featured? </FormDescription>-->
+              <FormMessage />
+            </div>
+          </FormItem>
+        </FormField>
       </div>
-      <Button type="submit" :disabled="isLoading" class="ml-auto">{{
+      <Button type="submit" :disabled="isLoading" class="ml-auto mt-5">{{
         action
       }}</Button>
     </form>

@@ -39,12 +39,14 @@ export const sizeSchema = z.object({
 export type SizeForm = z.infer<typeof sizeSchema>;
 
 export const productSchema = z.object({
-  name: z.string().min(1),
-  categoryId: z.string().min(1),
-  price: z.number(),
-  isFeatured: z.boolean(),
-  isArchived: z.boolean(),
-  sizeId: z.string().min(1),
-  colorId: z.string().min(1),
+  name: z.string().min(1, { message: "Product name is required" }),
+  images: z.object({ url: z.string() }).array().optional().default([]),
+  // .min(1, { message: "Image is required" }),
+  categoryId: z.string().min(1, { message: "Category id is required" }),
+  colorId: z.string().min(1, { message: "Color id is required" }),
+  price: z.coerce.number().min(1, { message: "Product price is required" }),
+  sizeId: z.string().min(1, { message: "Size id is required" }),
+  isFeatured: z.boolean().default(false).optional(),
+  isArchived: z.boolean().default(false).optional(),
 });
 export type ProductForm = z.infer<typeof productSchema>;

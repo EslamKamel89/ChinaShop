@@ -15,6 +15,10 @@ export default defineEventHandler(async (event) => {
   const product = await db.product.create({
     data: {
       ...validated,
+      images: undefined,
+      // images: {
+      //   createMany: { data: validated.images },
+      // },
       userId: session.user.id,
     },
   });
