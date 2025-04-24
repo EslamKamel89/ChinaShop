@@ -42,6 +42,11 @@ const handleLogout = async () => {
           ><Button variant="link">Sizes</Button></NuxtLink
         >
       </li>
+      <li>
+        <NuxtLink to="/admin/products"
+          ><Button variant="link">Products</Button></NuxtLink
+        >
+      </li>
     </ul>
     <main class="flex-1"><slot /></main>
 

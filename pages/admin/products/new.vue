@@ -6,7 +6,7 @@ definePageMeta({
 <template>
   <div class="flex flex-col">
     <div class="flex-1 space-y-4 p-8">
-      <AdminPorductForm :is-editing="false" />
+      <AdminProductForm :is-editing="false" />
     </div>
   </div>
 </template>
