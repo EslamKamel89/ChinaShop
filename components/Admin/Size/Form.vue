@@ -7,12 +7,12 @@ const props = defineProps<{
   isEditing: boolean;
 }>();
 const editMode = ref(props.isEditing);
-const title = computed(() => (editMode.value ? "Edit Color" : "Create Color"));
+const title = computed(() => (editMode.value ? "Edit Size" : "Create Size"));
 const description = computed(() =>
-  editMode.value ? "Edit Color" : "Create Color"
+  editMode.value ? "Edit Size" : "Create Size"
 );
 const toastMessage = computed(() =>
-  editMode.value ? "Color Updated" : "Color Created"
+  editMode.value ? "Size Updated" : "Size Created"
 );
 const action = ref("Save Changes");
 const route = useRoute();
@@ -25,36 +25,36 @@ const {
   toggleModal,
   isModalVisible,
 } = useStore();
-const { data: currentColor, execute: fetchColor } = await useFetch(
-  `/api/admin/colors/${route.params.colorId}`,
+const { data: currentSize, execute: fetchSize } = await useFetch(
+  `/api/admin/sizes/${route.params.sizeId}`,
   { immediate: false }
 );
 const { handleSubmit, errors } = useForm({
-  validationSchema: toTypedSchema(colorSchema),
+  validationSchema: toTypedSchema(sizeSchema),
   initialValues: {
-    ...currentColor.value,
-    value: currentColor.value?.value ?? "#000000",
+    ...currentSize.value,
+    // value: currentSize.value?.value ?? "#000000",
   },
 });
 const onSubmit = handleSubmit(async (values) => {
   try {
     toggleLoading(true);
     if (editMode.value) {
-      const color = await $fetch(`/api/admin/colors/${route.params.colorId}`, {
+      const size = await $fetch(`/api/admin/sizes/${route.params.sizeId}`, {
         method: "PATCH",
         body: values,
       });
-      pr(color, "handle submit - edit mode - Form.vue");
+      pr(size, "handle submit - edit mode - Form.vue");
     } else {
-      const color = await $fetch("/api/admin/colors", {
+      const size = await $fetch("/api/admin/sizes", {
         method: "POST",
         body: values,
       });
-      pr(color, "handle submit - create mode - Form.vue");
+      pr(size, "handle submit - create mode - Form.vue");
     }
     showMessage({ title: title.value + " Success" });
     //TODO: Refersh data
-    await navigateTo("/admin/colors");
+    await navigateTo("/admin/sizes");
   } catch (error) {
     const err = handleApiError(error);
     showError(err);
@@ -62,15 +62,15 @@ const onSubmit = handleSubmit(async (values) => {
     toggleLoading(false);
   }
 });
-const deleteColor = async () => {
+const deleteSize = async () => {
   try {
     toggleLoading(true);
-    const res = await $fetch(`/api/admin/colors/${route.params.colorId}`, {
+    const res = await $fetch(`/api/admin/sizes/${route.params.sizeId}`, {
       method: "DELETE",
     });
     if (res) {
-      showMessage({ title: "Color Deleted" });
-      await navigateTo("/admin/colors");
+      showMessage({ title: "Size Deleted" });
+      await navigateTo("/admin/sizes");
     }
     ``;
   } catch (error) {
@@ -82,21 +82,13 @@ const deleteColor = async () => {
 };
 onMounted(() => {
   if (editMode.value) {
-    fetchColor().then(() => {
-      if (!currentColor.value) {
+    fetchSize().then(() => {
+      if (!currentSize.value) {
         editMode.value = false;
       }
     });
   }
 });
-const handleCopy = (color: string) => {
-  navigator.clipboard.writeText(color);
-  showMessage({
-    title: "Copied!",
-    description: `Color:${color} is copied successfully`,
-    variant: "default",
-  });
-};
 </script>
 
 <template>
@@ -123,10 +115,10 @@ const handleCopy = (color: string) => {
             <FormLabel>Name</FormLabel>
             <FormControl>
               <Input
-                placeholder="Color Name"
+                placeholder="Size Name"
                 v-bind="componentField"
                 :disabled="isLoading"
-                v-bind:model-value="currentColor?.name"
+                v-bind:model-value="currentSize?.name"
               />
             </FormControl>
             <FormDescription />
@@ -138,11 +130,11 @@ const handleCopy = (color: string) => {
             <FormLabel>Value</FormLabel>
             <FormControl>
               <Input
-                type="color"
-                placeholder="Color Value"
+                type="text"
+                placeholder="Size Value"
                 v-bind="componentField"
                 :disabled="isLoading"
-                v-bind:model-value="currentColor?.value ?? '#000000'"
+                v-bind:model-value="currentSize?.value"
                 class="w-24 rounded-xl"
               />
             </FormControl>
@@ -158,7 +150,7 @@ const handleCopy = (color: string) => {
     <SharedAlertModal
       v-if="isModalVisible"
       :is-modal-visible="isModalVisible"
-      @on-confirm="deleteColor"
+      @on-confirm="deleteSize"
     ></SharedAlertModal>
   </div>
 </template>
