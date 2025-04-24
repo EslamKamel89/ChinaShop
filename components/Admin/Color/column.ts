@@ -1,6 +1,7 @@
 import CallAction from "@/components/Admin/Color/CellAction.vue";
 import type { ColumnDef } from "@tanstack/vue-table";
 import { h } from "vue";
+import Value from "~/components/Admin/Color/Value.vue";
 export interface Color {
   id: string;
   name: string;
@@ -24,8 +25,8 @@ export const columns: ColumnDef<Color>[] = [
     header: () => h("div", { class: "text-right font-bold" }, "Color Value"),
     cell: ({ row }) => {
       return h(
-        "div",
-        { class: "text-right font-medium" },
+        Value,
+        { colorCode: row.getValue("value") as string },
         row.getValue("value")
       );
     },
