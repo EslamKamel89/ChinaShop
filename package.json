@@ -10,6 +10,7 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@cloudinary/vue": "^1.13.1",
     "@nuxt/icon": "^1.12.0",
     "@nuxtjs/cloudinary": "^4.0.0",
     "@prisma/nuxt": "^0.3.0",
