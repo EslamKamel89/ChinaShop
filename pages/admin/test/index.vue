@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const files = ref<FileList | null>(null);
 const images = ref<string[]>([]);
+const name = ref<string>();
 const handleFileChange = (event: Event) => {
   files.value = (event.target as HTMLInputElement).files;
   //   pr(files.value, "files.value");
@@ -9,13 +10,15 @@ const handleSubmit = async () => {
   const fd = new FormData();
   if (files.value?.length) {
     Array.from(files.value).forEach((file, index) => {
-      fd.append(`index${index}`, file);
+      fd.append(`images[]`, file);
+      fd.append("name", name.value ?? "");
     });
   }
-  images.value = await $fetch<string[]>("/api/test", {
+  const data = await $fetch<{ images: string[] }>("/api/test", {
     method: "post",
     body: fd,
   });
+  images.value = data.images;
   images.value = images.value.map(
     (path) => `http://localhost:3000/test/${path}`
   );
@@ -25,6 +28,7 @@ const handleSubmit = async () => {
   <div class="max-w-3xl mx-auto my-4">
     <form @submit.prevent="handleSubmit">
       <div class="flex flex-col space-y-2">
+        <Input type="text" placeholder="Enter you name" v-model="name"></Input>
         <div class="flex items-center justify-center w-full">
           <label
             for="dropzone-file"

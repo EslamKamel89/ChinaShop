@@ -18,6 +18,7 @@ const toastMessage = computed(() =>
 );
 const action = ref("Save Changes");
 const route = useRoute();
+const files = ref<FileList | null>(null);
 const {
   isLoading,
   toggleLoading,
@@ -35,33 +36,49 @@ const { handleSubmit, errors } = useForm({
   validationSchema: toTypedSchema(productSchema),
   initialValues: currentProduct.value,
 });
-const onSubmit = handleSubmit(async (values) => {
+const onSubmit = (event: Event) => {
   pr("onSubmit");
-  try {
-    toggleLoading(true);
-    if (editMode.value) {
-      const product = await $fetch(
-        `/api/admin/products/${route.params.productId}`,
-        { method: "PATCH", body: values }
-      );
-      pr(product, "handle submit - edit mode - Form.vue");
-    } else {
-      const product = await $fetch("/api/admin/products", {
-        method: "POST",
-        body: values,
-      });
-      pr(product, "handle submit - create mode - Form.vue");
+  handleSubmit(async (values) => {
+    // pr(values, "values");
+    // return;
+    try {
+      toggleLoading(true);
+      const fd = new FormData();
+      if (files.value?.length) {
+        Array.from(files.value).forEach((file, index) => {
+          fd.append(`images[]`, file);
+        });
+      }
+      if (editMode.value) {
+        const product = await $fetch(
+          `/api/admin/products/${route.params.productId}`,
+          { method: "PATCH", body: values }
+        );
+        pr(product, "handle submit - edit mode - Form.vue");
+      } else {
+        for (const key in values) {
+          if (key === "images") continue;
+          // if (key == "isFeatured" || key == "isArchived") continue;
+          // @ts-ignore
+          fd.append(key, values[key]);
+        }
+        const product = await $fetch("/api/admin/products", {
+          method: "POST",
+          body: fd,
+        });
+        pr(product, "handle submit - create mode - Form.vue");
+      }
+      showMessage({ title: title.value + " Success" });
+      //TODO: Refersh data
+      await navigateTo("/admin/products");
+    } catch (error) {
+      const err = handleApiError(error);
+      showError(err);
+    } finally {
+      toggleLoading(false);
     }
-    showMessage({ title: title.value + " Success" });
-    //TODO: Refersh data
-    await navigateTo("/admin/products");
-  } catch (error) {
-    const err = handleApiError(error);
-    showError(err);
-  } finally {
-    toggleLoading(false);
-  }
-});
+  })();
+};
 const deleteProduct = async () => {
   try {
     toggleLoading(true);
@@ -72,7 +89,6 @@ const deleteProduct = async () => {
       showMessage({ title: "Product Deleted" });
       await navigateTo("/admin/products");
     }
-    ``;
   } catch (error) {
     const err = handleApiError(error);
     showError(err);
@@ -98,6 +114,10 @@ onMounted(() => {
     });
   }
 });
+const handleFileChange = (event: Event) => {
+  files.value = (event.target as HTMLInputElement).files;
+  //   pr(files.value, "files.value");
+};
 </script>
 
 <template>
@@ -118,6 +138,8 @@ onMounted(() => {
     </Heading>
     <Separator class="my-2" />
     <form @submit.prevent="onSubmit">
+      <div>{{ errors }}</div>
+      <div>{{ files?.length ?? 0 }}</div>
       <div class="md:grid md:grid-cols-2 gap-8 space-y-3 md:space-y-0">
         <FormField v-slot="{ componentField }" name="name">
           <FormItem>
@@ -264,6 +286,44 @@ onMounted(() => {
             </div>
           </FormItem>
         </FormField>
+        <div class="flex items-center justify-center w-full">
+          <label
+            for="dropzone-file"
+            class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100"
+          >
+            <div class="flex flex-col items-center justify-center pt-5 pb-6">
+              <svg
+                class="w-8 h-8 mb-4 text-gray-500"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 20 16"
+              >
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
+                />
+              </svg>
+              <p class="mb-2 text-sm text-gray-500">
+                <span class="font-semibold">Click to upload</span> or drag and
+                drop
+              </p>
+              <p class="text-xs text-gray-500">
+                SVG, PNG, JPG or GIF (MAX. 800x400px)
+              </p>
+            </div>
+            <input
+              id="dropzone-file"
+              type="file"
+              class="hidden"
+              @change="handleFileChange"
+              :multiple="true"
+            />
+          </label>
+        </div>
       </div>
       <Button type="submit" :disabled="isLoading" class="ml-auto mt-5">{{
         action

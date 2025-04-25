@@ -40,7 +40,7 @@ export type SizeForm = z.infer<typeof sizeSchema>;
 
 export const productSchema = z.object({
   name: z.string().min(1, { message: "Product name is required" }),
-  images: z.object({ url: z.string() }).array().optional().default([]),
+  // images: z.object({ url: z.string() }).array().optional().default([]),
   // .min(1, { message: "Image is required" }),
   categoryId: z.string().min(1, { message: "Category id is required" }),
   colorId: z.string().min(1, { message: "Color id is required" }),
