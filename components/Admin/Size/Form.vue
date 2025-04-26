@@ -29,7 +29,7 @@ const { data: currentSize, execute: fetchSize } = await useFetch(
   `/api/admin/sizes/${route.params.sizeId}`,
   { immediate: false }
 );
-const { handleSubmit, errors } = useForm({
+const { handleSubmit, errors, setValues } = useForm({
   validationSchema: toTypedSchema(sizeSchema),
   initialValues: {
     ...currentSize.value,
@@ -85,6 +85,8 @@ onMounted(() => {
     fetchSize().then(() => {
       if (!currentSize.value) {
         editMode.value = false;
+      } else {
+        setValues(currentSize.value);
       }
     });
   }

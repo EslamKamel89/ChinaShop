@@ -31,7 +31,7 @@ const { data: currentCategory, execute: fetchCategory } = await useFetch(
   `/api/admin/categories/${route.params.categoryId}`,
   { immediate: false }
 );
-const { handleSubmit, errors } = useForm({
+const { handleSubmit, errors, setValues } = useForm({
   validationSchema: toTypedSchema(categorySchema),
   initialValues: currentCategory.value,
 });
@@ -85,6 +85,8 @@ onMounted(() => {
     fetchCategory().then(() => {
       if (!currentCategory.value) {
         editMode.value = false;
+      } else {
+        setValues(currentCategory.value);
       }
     });
   }

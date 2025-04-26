@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { toTypedSchema } from "@vee-validate/zod";
+import { Trash } from "lucide-vue-next";
 import { useForm } from "vee-validate";
 import Heading from "~/components/ui/Heading.vue";
 import handleApiError from "~/utils/error";
@@ -32,7 +33,7 @@ const { data: currentProduct, execute: fetchProduct } = await useFetch(
   `/api/admin/products/${route.params.productId}`,
   { immediate: false }
 );
-const { handleSubmit, errors } = useForm({
+const { handleSubmit, errors, setValues } = useForm({
   validationSchema: toTypedSchema(productSchema),
   initialValues: currentProduct.value,
 });
@@ -110,6 +111,8 @@ onMounted(() => {
     fetchProduct().then(() => {
       if (!currentProduct.value) {
         editMode.value = false;
+      } else {
+        setValues(currentProduct.value);
       }
     });
   }
@@ -288,6 +291,30 @@ const handleFileChange = (newFiles: FileList) => {
           </FormItem>
         </FormField>
       </div>
+      <template v-if="currentProduct?.images">
+        <div class="my-4">
+          <h3 class="font-bold">Attached Images</h3>
+          <div
+            class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 w-fit mx-auto"
+          >
+            <div
+              v-for="img in currentProduct?.images"
+              :key="img.id"
+              class="relative"
+            >
+              <Trash
+                class="absolute -top-2 -right-2 bg-white text-red-500 rounded-full px-2 py-1 w-10 h-10 cursor-pointer"
+              />
+              <img
+                :src="`${baseUrl()}/products/${img.url}`"
+                :alt="`Product image`"
+                class="rounded-lg border w-32"
+              />
+            </div>
+          </div>
+        </div>
+      </template>
+      <h3 class="font-bold">Attached New Images</h3>
       <SharedImageUpload @on-change="handleFileChange" />
       <Button type="submit" :disabled="isLoading" class="ml-auto mt-5">{{
         action

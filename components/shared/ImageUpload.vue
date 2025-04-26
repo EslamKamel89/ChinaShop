@@ -56,7 +56,9 @@ const getPreviewUrl = (file: File) => URL.createObjectURL(file);
       </label>
     </div>
     <template v-if="files">
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 w-full gap-2">
+      <div
+        class="my-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 w-fit mx-auto"
+      >
         <div v-for="(file, index) in files" :key="file.name" class="relative">
           <Trash
             class="absolute -top-2 -right-2 bg-white text-red-500 rounded-full px-2 py-1 w-10 h-10 cursor-pointer"

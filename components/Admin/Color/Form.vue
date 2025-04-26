@@ -29,7 +29,7 @@ const { data: currentColor, execute: fetchColor } = await useFetch(
   `/api/admin/colors/${route.params.colorId}`,
   { immediate: false }
 );
-const { handleSubmit, errors } = useForm({
+const { handleSubmit, errors, setValues } = useForm({
   validationSchema: toTypedSchema(colorSchema),
   initialValues: {
     ...currentColor.value,
@@ -85,6 +85,8 @@ onMounted(() => {
     fetchColor().then(() => {
       if (!currentColor.value) {
         editMode.value = false;
+      } else {
+        setValues(currentColor.value);
       }
     });
   }
