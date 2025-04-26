@@ -5,7 +5,7 @@ export default defineEventHandler(async (event) => {
 
   const product = await db.product.findUnique({
     where: { id: productId },
-    include: { images: true },
+    include: { category: true, color: true, size: true, images: true },
   });
   return product;
 });

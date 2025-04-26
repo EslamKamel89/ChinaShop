@@ -1,7 +1,10 @@
 <script setup lang="ts">
+import { Trash } from "lucide-vue-next";
+
 const files = ref<FileList>();
 const emit = defineEmits<{
   onChange: [files: FileList];
+  onRemove: [file: File];
 }>();
 const handleFileChange = (event: Event) => {
   const newFiles = (event.target as HTMLInputElement).files;
@@ -54,7 +57,10 @@ const getPreviewUrl = (file: File) => URL.createObjectURL(file);
     </div>
     <template v-if="files">
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 w-full gap-2">
-        <div v-for="(file, index) in files" :key="file.name">
+        <div v-for="(file, index) in files" :key="file.name" class="relative">
+          <Trash
+            class="absolute -top-2 -right-2 bg-white text-red-500 rounded-full px-2 py-1 w-10 h-10 cursor-pointer"
+          />
           <img :src="getPreviewUrl(file)" alt="" class="rounded-lg border" />
         </div>
       </div>

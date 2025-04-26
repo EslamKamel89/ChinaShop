@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
       statusMessage: "Unauthorized, You don't have ADMIN access",
     });
   }
-  const { name } = await readValidatedBody(event, (body) => {
+  const validated = await readValidatedBody(event, (body) => {
     return productSchema.parse(body);
   });
   const productId = event.context.params?.productId;
@@ -18,7 +18,13 @@ export default defineEventHandler(async (event) => {
   }
   const product = await db.product.update({
     where: { id: productId },
-    data: { name },
+    data: { ...validated },
+    include: {
+      category: true,
+      color: true,
+      size: true,
+      images: true,
+    },
   });
   return product;
 });
