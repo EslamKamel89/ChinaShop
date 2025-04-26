@@ -50,7 +50,7 @@ const onSubmit = (event: Event) => {
         });
       }
       if (editMode.value) {
-        const product = await $fetch(
+        let product = await $fetch(
           `/api/admin/products/${route.params.productId}`,
           {
             method: "PATCH",
@@ -58,6 +58,13 @@ const onSubmit = (event: Event) => {
           }
         );
         pr(product, "handle submit - edit mode - Form.vue");
+        if (files.value?.length) {
+          await $fetch(`/api/admin/products/${route.params.productId}/images`, {
+            method: "PATCH",
+            body: fd,
+          });
+        }
+        await navigateTo("/admin/products");
       } else {
         for (const key in values) {
           if (key === "images") continue;
