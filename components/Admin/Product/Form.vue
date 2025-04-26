@@ -52,7 +52,10 @@ const onSubmit = (event: Event) => {
       if (editMode.value) {
         const product = await $fetch(
           `/api/admin/products/${route.params.productId}`,
-          { method: "PATCH", body: values }
+          {
+            method: "PATCH",
+            body: { ...values, images: currentProduct?.value?.images },
+          }
         );
         pr(product, "handle submit - edit mode - Form.vue");
       } else {
@@ -119,7 +122,13 @@ onMounted(() => {
 const handleFileChange = (newFiles: FileList) => {
   files.value = newFiles;
 };
-const handleImageDeleteInUpdate = (id: string) => {};
+const handleImageDeleteInUpdate = (id: string) => {
+  pr("hello world");
+  if (!currentProduct.value?.images) return;
+  currentProduct.value!.images = currentProduct.value?.images.filter(
+    (img) => img.id != id
+  );
+};
 </script>
 
 <template>
@@ -295,7 +304,6 @@ const handleImageDeleteInUpdate = (id: string) => {};
         :images="currentProduct?.images"
         @on-delete="handleImageDeleteInUpdate"
       />
-      <h3 class="font-bold">Attached New Images</h3>
       <SharedImageUpload @on-change="handleFileChange" />
       <Button type="submit" :disabled="isLoading" class="ml-auto mt-5">{{
         action

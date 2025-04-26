@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { Trash } from "lucide-vue-next";
+
 defineProps<{
   images:
     | {
@@ -14,7 +16,7 @@ const emit = defineEmits<{
 }>();
 </script>
 <template>
-  <template v-if="images">
+  <template v-if="images?.length">
     <div class="my-4">
       <h3 class="font-bold">Attached Images</h3>
       <div
@@ -22,6 +24,7 @@ const emit = defineEmits<{
       >
         <div v-for="img in images" :key="img.id" class="relative">
           <Trash
+            @click="emit('onDelete', img.id)"
             class="absolute -top-2 -right-2 bg-white text-red-500 rounded-full px-2 py-1 w-10 h-10 cursor-pointer"
           />
           <img
