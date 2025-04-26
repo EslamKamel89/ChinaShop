@@ -25,11 +25,16 @@
 <script setup lang="ts">
 import { columns } from "@/components/Admin/Product/column";
 import Heading from "~/components/ui/Heading.vue";
+import { money } from "~/server/utils";
 const { data: products, status } = await useFetch("/api/admin/products", {
   key: "products",
   transform: (products) => {
     return products.map((product) => ({
       ...product,
+      price: money(product.price),
+      size: product.size.name,
+      // color: product.color.name,
+      category: product.category.name,
       createdAt: formatDateInTable(product.createdAt),
     }));
   },

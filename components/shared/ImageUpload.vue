@@ -2,20 +2,44 @@
 import { Trash } from "lucide-vue-next";
 
 const files = ref<FileList>();
+const filesArray = ref<File[]>([]);
 const emit = defineEmits<{
   onChange: [files: FileList];
-  onRemove: [file: File];
 }>();
 const handleFileChange = (event: Event) => {
   const newFiles = (event.target as HTMLInputElement).files;
 
   if (newFiles) {
     files.value = newFiles;
+    filesArray.value = Array.from(newFiles);
     emit("onChange", newFiles);
   }
 };
+const handleFileRemove = (index: number) => {
+  if (!files.value) return;
+  filesArray.value = filesArray.value.filter((_, i) => i !== index);
+  updateFileInput();
+};
+const updateFileInput = () => {
+  const dataTransfer = new DataTransfer();
+
+  filesArray.value.forEach((file) => {
+    dataTransfer.items.add(file);
+  });
+
+  files.value = dataTransfer.files;
+
+  const fileInput = document.getElementById(
+    "dropzone-file"
+  ) as HTMLInputElement;
+  if (fileInput) {
+    fileInput.files = dataTransfer.files;
+  }
+  emit("onChange", files.value);
+};
 const getPreviewUrl = (file: File) => URL.createObjectURL(file);
 </script>
+
 <template>
   <div class="my-4">
     <h3 class="font-bold">Attached New Images</h3>
@@ -64,6 +88,7 @@ const getPreviewUrl = (file: File) => URL.createObjectURL(file);
         >
           <div v-for="(file, index) in files" :key="file.name" class="relative">
             <Trash
+              @click="handleFileRemove(index)"
               class="absolute -top-2 -right-2 bg-white text-red-500 rounded-full px-2 py-1 w-10 h-10 cursor-pointer"
             />
             <img :src="getPreviewUrl(file)" alt="" class="rounded-lg border" />
