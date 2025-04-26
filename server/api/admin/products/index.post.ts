@@ -11,8 +11,7 @@ export default defineEventHandler(async (event) => {
       statusMessage: "Unauthorized, You don't have ADMIN access",
     });
   }
-  // const body = await readBody(event);
-  // Parse the multipart form data
+
   const parts = await readMultipartFormData(event);
   if (!parts) {
     throw createError({
@@ -23,7 +22,6 @@ export default defineEventHandler(async (event) => {
   const uplaodedFilePath: string[] = [];
   const formData: { [key: string]: any } = {};
 
-  // Process each part of the form data
   for (const part of parts) {
     if (part.filename) {
       const filePath = path.join(
@@ -34,7 +32,6 @@ export default defineEventHandler(async (event) => {
       fs.writeFileSync(filePath, part.data);
       uplaodedFilePath.push(part.filename);
     } else {
-      // Handle regular fields
       if (part.name) formData[part.name] = part.data.toString("utf-8");
     }
   }
@@ -51,8 +48,6 @@ export default defineEventHandler(async (event) => {
     isFeatured: Boolean(formData.isFeatured),
     isArchived: Boolean(formData.isArchived),
     images: undefined,
-    // isFeatured: undefined,
-    // isArchived: undefined,
   });
   const product = await db.product.create({
     // @ts-ignore
