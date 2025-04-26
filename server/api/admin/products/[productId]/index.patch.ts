@@ -1,3 +1,4 @@
+import { deleteServerFile } from "~/server/utils/deleteServerFile";
 import db from "~/utils/db";
 import { productSchema } from "~/utils/validation";
 
@@ -23,9 +24,18 @@ export default defineEventHandler(async (event) => {
   if (!productId) {
     throw createError({ statusCode: 404, statusMessage: "Product not found" });
   }
+  const productImages = await db.image.findMany({
+    where: { productId: productId },
+  });
   await db.product.update({
     where: { id: productId },
     data: { ...validated, images: { deleteMany: {} } },
+  });
+  productImages.forEach(async (img) => {
+    const index = images().findIndex((image) => img.url == image.url);
+    if (index == -1) {
+      await deleteServerFile(img.url, "products");
+    }
   });
   const product = await db.product.update({
     where: { id: productId },
