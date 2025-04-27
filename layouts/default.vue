@@ -14,6 +14,8 @@ const isMobile = breakpoints.smaller("tablet");
 watch(isMobile, (current, prev) => {
   showMobileMenu.value = false;
 });
+const session = useUserSession();
+
 onMounted(() => {});
 </script>
 <template>
@@ -71,51 +73,62 @@ onMounted(() => {});
               @hide-menu="showMobileMenu = false"
             />
             <LayoutNavItem
-              to="/auth/login"
-              title="Login"
+              to="/cart"
+              title="Cart"
               @hide-menu="showMobileMenu = false"
             />
-            <LayoutNavItem
-              to="/auth/register"
-              title="Register"
-              @hide-menu="showMobileMenu = false"
-            />
-            <LayoutNavItem
-              to="/admin"
+            <LayoutNavDropdown
+              v-if="session.user.value"
+              :links="[
+                {
+                  to: '/admin',
+                  title: 'Dashboard',
+                },
+                {
+                  to: '/admin/categories',
+                  title: 'Categories',
+                },
+                {
+                  to: '/admin/colors',
+                  title: 'Colors',
+                },
+                {
+                  to: '/admin/sizes',
+                  title: 'Sizes',
+                },
+                {
+                  to: '/admin/products',
+                  title: 'Products',
+                },
+              ]"
               title="Admin"
-              @hide-menu="showMobileMenu = false"
             />
-            <LayoutNavItem
-              type="button"
-              :click="handleLogout"
-              title="Logout"
-              @hide-menu="showMobileMenu = false"
-            />
-            <LayoutNavItem
-              to="/admin/categories"
-              title="Categories"
-              @hide-menu="showMobileMenu = false"
-            />
-            <LayoutNavItem
-              to="/admin/colors"
-              title="Colors"
-              @hide-menu="showMobileMenu = false"
-            />
-            <LayoutNavItem
-              to="/admin/sizes"
-              title="Sizes"
-              @hide-menu="showMobileMenu = false"
-            />
-            <LayoutNavItem
-              to="/admin/products"
-              title="Products"
-              @hide-menu="showMobileMenu = false"
-            />
-            <LayoutNavItem
-              to="/admin/test"
-              title="Test"
-              @hide-menu="showMobileMenu = false"
-            />
+
+            <LayoutNavDropdown
+              :links="
+                !session.user.value
+                  ? [
+                      {
+                        to: '/auth/register',
+                        title: 'Register',
+                      },
+                      {
+                        to: '/auth/login',
+                        title: 'Login',
+                      },
+                    ]
+                  : []
+              "
+              :title="session.user?.value?.name ?? 'Welcome Guest'"
+            >
+              <LayoutNavItem
+                v-if="session.user.value"
+                type="button"
+                :click="handleLogout"
+                title="Logout"
+                @hide-menu="showMobileMenu = false"
+              />
+            </LayoutNavDropdown>
           </ul>
         </div>
       </div>

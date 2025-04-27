@@ -14,7 +14,7 @@ const handleHideMenu = async () => {
 };
 </script>
 <template>
-  <li @click="handleHideMenu">
+  <div @click="handleHideMenu">
     <button
       v-if="type == 'button'"
       @click="click"
@@ -31,5 +31,5 @@ const handleHideMenu = async () => {
       aria-current="page"
       >{{ title }}</NuxtLink
     >
-  </li>
+  </div>
 </template>
