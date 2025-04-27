@@ -4,55 +4,122 @@ const handleLogout = async () => {
   await clear();
   window.location.assign("/auth/login");
 };
+const showMobileMenu = ref(false);
+const breakpoints = useBreakpoints({
+  mobile: 640,
+  tablet: 768,
+  desktop: 1024,
+});
+const isMobile = breakpoints.smaller("tablet");
+watch(isMobile, (current, prev) => {
+  showMobileMenu.value = false;
+});
+onMounted(() => {});
 </script>
 <template>
   <div class="flex flex-col min-h-screen">
-    <ul class="flex items-center">
-      <li>
-        <NuxtLink to="/"><Button variant="link">Home</Button></NuxtLink>
-      </li>
-      <li>
-        <NuxtLink to="/auth/login"
-          ><Button variant="link">Login</Button></NuxtLink
+    <nav class="bg-white border-gray-200 dark:bg-gray-900 dark:border-gray-700">
+      <div
+        class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4"
+      >
+        <NuxtLink
+          to="/"
+          class="flex items-center space-x-3 rtl:space-x-reverse"
         >
-      </li>
-      <li>
-        <NuxtLink to="/auth/register"
-          ><Button variant="link">Register</Button></NuxtLink
+          <img
+            :src="`${baseUrl()}/assets/china-shop-2.png`"
+            class="h-24"
+            alt="Flowbite Logo"
+          />
+        </NuxtLink>
+        <button
+          data-collapse-toggle="navbar-dropdown"
+          type="button"
+          class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+          aria-controls="navbar-dropdown"
+          aria-expanded="false"
+          @click="showMobileMenu = !showMobileMenu"
         >
-      </li>
-      <li>
-        <NuxtLink to="/admin"><Button variant="link">Admin</Button></NuxtLink>
-      </li>
-      <li>
-        <Button @click="handleLogout" variant="link">Logout</Button>
-      </li>
-      <li>
-        <NuxtLink to="/admin/categories"
-          ><Button variant="link">Categories</Button></NuxtLink
+          <span class="sr-only">Open main menu</span>
+          <svg
+            class="w-5 h-5"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 17 14"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M1 1h15M1 7h15M1 13h15"
+            />
+          </svg>
+        </button>
+        <div
+          v-if="showMobileMenu || !isMobile"
+          class="w-full md:block md:w-auto"
+          id="navbar-dropdown"
         >
-      </li>
-      <li>
-        <NuxtLink to="/admin/colors"
-          ><Button variant="link">Colors</Button></NuxtLink
-        >
-      </li>
-      <li>
-        <NuxtLink to="/admin/sizes"
-          ><Button variant="link">Sizes</Button></NuxtLink
-        >
-      </li>
-      <li>
-        <NuxtLink to="/admin/products"
-          ><Button variant="link">Products</Button></NuxtLink
-        >
-      </li>
-      <li>
-        <NuxtLink to="/admin/test"
-          ><Button variant="link">Test</Button></NuxtLink
-        >
-      </li>
-    </ul>
+          <ul
+            class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-blue-700 md:bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700"
+          >
+            <LayoutNavItem
+              to="/"
+              title="Home"
+              @hide-menu="showMobileMenu = false"
+            />
+            <LayoutNavItem
+              to="/auth/login"
+              title="Login"
+              @hide-menu="showMobileMenu = false"
+            />
+            <LayoutNavItem
+              to="/auth/register"
+              title="Register"
+              @hide-menu="showMobileMenu = false"
+            />
+            <LayoutNavItem
+              to="/admin"
+              title="Admin"
+              @hide-menu="showMobileMenu = false"
+            />
+            <LayoutNavItem
+              type="button"
+              :click="handleLogout"
+              title="Logout"
+              @hide-menu="showMobileMenu = false"
+            />
+            <LayoutNavItem
+              to="/admin/categories"
+              title="Categories"
+              @hide-menu="showMobileMenu = false"
+            />
+            <LayoutNavItem
+              to="/admin/colors"
+              title="Colors"
+              @hide-menu="showMobileMenu = false"
+            />
+            <LayoutNavItem
+              to="/admin/sizes"
+              title="Sizes"
+              @hide-menu="showMobileMenu = false"
+            />
+            <LayoutNavItem
+              to="/admin/products"
+              title="Products"
+              @hide-menu="showMobileMenu = false"
+            />
+            <LayoutNavItem
+              to="/admin/test"
+              title="Test"
+              @hide-menu="showMobileMenu = false"
+            />
+          </ul>
+        </div>
+      </div>
+    </nav>
     <main class="flex-1"><slot /></main>
 
     <footer class="bg-white rounded-lg shadow-sm m-4 dark:bg-gray-800">
@@ -83,4 +150,82 @@ const handleLogout = async () => {
       </div>
     </footer>
   </div>
-</template>
+  <!--
+    <div class="flex flex-col min-h-screen">
+      <ul class="flex items-center">
+        <li>
+          <NuxtLink to="/"><Button variant="link">Home</Button></NuxtLink>
+        </li>
+        <li>
+          <NuxtLink to="/auth/login"
+          ><Button variant="link">Login</Button></NuxtLink
+          >
+        </li>
+        <li>
+          <NuxtLink to="/auth/register"
+          ><Button variant="link">Register</Button></NuxtLink
+          >
+        </li>
+        <li>
+          <NuxtLink to="/admin"><Button variant="link">Admin</Button></NuxtLink>
+        </li>
+        <li>
+          <Button @click="handleLogout" variant="link">Logout</Button>
+        </li>
+        <li>
+          <NuxtLink to="/admin/categories"
+          ><Button variant="link">Categories</Button></NuxtLink
+          >
+        </li>
+        <li>
+          <NuxtLink to="/admin/colors"
+          ><Button variant="link">Colors</Button></NuxtLink
+          >
+        </li>
+        <li>
+          <NuxtLink to="/admin/sizes"
+          ><Button variant="link">Sizes</Button></NuxtLink
+          >
+        </li>
+        <li>
+          <NuxtLink to="/admin/products"
+          ><Button variant="link">Products</Button></NuxtLink
+          >
+        </li>
+        <li>
+          <NuxtLink to="/admin/test"
+          ><Button variant="link">Test</Button></NuxtLink
+          >
+        </li>
+      </ul>
+      <main class="flex-1"><slot /></main>
+      
+      <footer class="bg-white rounded-lg shadow-sm m-4 dark:bg-gray-800">
+        <div
+        class="w-full mx-auto max-w-screen-xl p-4 md:flex md:items-center md:justify-between"
+        >
+        <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400"
+        >© 2023
+        <a href="https://flowbite.com/" class="hover:underline">Flowbite™</a>.
+        All Rights Reserved.
+      </span>
+      <ul
+      class="flex flex-wrap items-center mt-3 text-sm font-medium text-gray-500 dark:text-gray-400 sm:mt-0"
+      >
+      <li>
+        <a href="#" class="hover:underline me-4 md:me-6">About</a>
+      </li>
+      <li>
+        <a href="#" class="hover:underline me-4 md:me-6">Privacy Policy</a>
+      </li>
+      <li>
+        <a href="#" class="hover:underline me-4 md:me-6">Licensing</a>
+      </li>
+      <li>
+        <a href="#" class="hover:underline">Contact</a>
+      </li>
+    </ul>
+  </div>
+</footer>
+</div>
+--></template>
