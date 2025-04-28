@@ -21,6 +21,11 @@ const {
           updatedAt: new Date(img.updatedAt),
         })),
       ],
+      category: {
+        ...product.category,
+        createdAt: new Date(product.category.createdAt),
+        updatedAt: new Date(product.category.updatedAt),
+      },
     }));
   },
   lazy: true,

@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { type Image, type Product } from "@prisma/client";
+import type { Category, Image, Product } from "@prisma/client";
 import { Scan } from "lucide-vue-next";
 defineProps<{
-  product: Product & { images: Image[] };
+  product: Product & { images: Image[]; category: Category };
 }>();
 </script>
 <template>
@@ -17,18 +17,12 @@ defineProps<{
         Featured
       </div>
       <div class="absolute right-0 top-0">
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger as-child>
-              <Button variant="outline">
-                <Scan />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Add to library</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
+        <SharedToolTip>
+          <template #trigger>
+            <Scan class="" />
+          </template>
+          <template #content> Show Preview </template>
+        </SharedToolTip>
       </div>
       <img
         :src="`${baseUrl()}/products/${product.images[0].url}`"
@@ -36,8 +30,13 @@ defineProps<{
         class="w-full h-36 flex items- min-w-30 rounded-lg bg-gray-300"
       />
     </div>
-    <div class="space-y-2">
-      <div class="font-bold">{{ product.name }}</div>
+    <div class="space-y-2 w-full flex flex-col justify-center items-center">
+      <div>
+        <div class="font-bold">{{ product.name }}</div>
+        <div class="font-thin text-sm">{{ product.category.name }}</div>
+      </div>
+      <div>EGP {{ product.price }}</div>
+      <Button class="w-full" variant="outline"> Add To Card</Button>
     </div>
   </div>
 </template>
