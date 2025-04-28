@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { type Product } from "@prisma/client";
+import { type Image, type Product } from "@prisma/client";
 defineProps<{
-  products: Product[];
+  products: (Product & { images: Image[] })[];
   title: string;
 }>();
 </script>
 <template>
   <div>
-    <h2>{{ title }}</h2>
+    <h2 class="font-bold tracking-tight text-lg">{{ title }}</h2>
     <div
       v-if="products.length"
       class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"

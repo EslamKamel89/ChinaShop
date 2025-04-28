@@ -14,6 +14,13 @@ const {
       ...product,
       createdAt: new Date(product.createdAt),
       updatedAt: new Date(product.updatedAt),
+      images: [
+        ...product.images.map((img) => ({
+          ...img,
+          createdAt: new Date(img.createdAt),
+          updatedAt: new Date(img.updatedAt),
+        })),
+      ],
     }));
   },
   lazy: true,
