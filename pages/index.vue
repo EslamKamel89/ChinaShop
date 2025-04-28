@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const { user, clear } = useUserSession();
 definePageMeta({
-  middleware: ["auth"],
+  // middleware: ["auth"],
 });
 
 const { showError } = useStore();
