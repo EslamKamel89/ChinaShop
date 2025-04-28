@@ -3,14 +3,13 @@ import { type Product } from "@prisma/client";
 defineProps<{
   products: Product[];
   title: string;
-  isLoading: boolean;
 }>();
 </script>
 <template>
   <div>
     <h2>{{ title }}</h2>
     <div
-      v-if="products.length && false"
+      v-if="products.length"
       class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
     >
       <ProductItem

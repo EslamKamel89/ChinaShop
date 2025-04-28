@@ -25,10 +25,14 @@ const { showError } = useStore();
     <HomeHero />
     <div class="py-16 sm:py-32">
       <div class="flex flex-col space-y-8 px-4 sm:px-6 lg:px-8">
+        <ProductItemLoader
+          title="Fetaured Products"
+          v-if="status == 'pending'"
+        />
         <ProductList
+          v-else
           :products="products ?? []"
           title="Fetaured Products"
-          :is-loading="status == 'pending'"
         />
       </div>
     </div>
