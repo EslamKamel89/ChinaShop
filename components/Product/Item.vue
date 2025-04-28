@@ -5,5 +5,9 @@ defineProps<{
 }>();
 </script>
 <template>
-  <div class="text-black"></div>
+  <div class="text-black">
+    <pre>
+      {{ product }}
+    </pre>
+  </div>
 </template>

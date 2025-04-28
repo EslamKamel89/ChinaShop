@@ -9,6 +9,13 @@ const {
   execute,
 } = await useFetch("/api/admin/products", {
   key: "products",
+  transform: (products) => {
+    return products.map((product) => ({
+      ...product,
+      createdAt: new Date(product.createdAt),
+      updatedAt: new Date(product.updatedAt),
+    }));
+  },
   lazy: true,
 });
 const { showError } = useStore();
@@ -18,10 +25,11 @@ const { showError } = useStore();
     <HomeHero />
     <div class="py-16 sm:py-32">
       <div class="flex flex-col space-y-8 px-4 sm:px-6 lg:px-8">
-        <pre>
-
-          {{ products }}
-        </pre>
+        <ProductList
+          :products="products ?? []"
+          title="Fetaured Products"
+          :is-loading="status == 'pending'"
+        />
       </div>
     </div>
   </div>
