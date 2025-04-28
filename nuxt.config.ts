@@ -32,4 +32,21 @@ export default defineNuxtConfig({
     mode: "css",
     cssLayer: "base",
   },
+  app: {
+    head: {
+      script: [
+        {
+          src: "https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4",
+          type: "text/javascript",
+        },
+      ],
+      link: [
+        {
+          rel: "stylesheet",
+          href: "https://cdn.jsdelivr.net/npm/daisyui@5",
+          type: "text/css",
+        },
+      ],
+    },
+  },
 });
