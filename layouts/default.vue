@@ -19,10 +19,12 @@ const session = useUserSession();
 onMounted(() => {});
 </script>
 <template>
-  <div class="flex flex-col min-h-screen">
-    <nav class="bg-white border-gray-200 dark:bg-gray-900 dark:border-gray-700">
+  <div class="min-h-screen flex flex-col">
+    <nav
+      class="bg-gray-50 border border-b-1 shadow-xl rounded-b-3xl border-gray-200 dark:bg-gray-900 dark:border-gray-700"
+    >
       <div
-        class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4"
+        class="max-w-5xl flex flex-wrap items-center justify-between mx-auto p-4"
       >
         <NuxtLink
           to="/"
@@ -104,7 +106,7 @@ onMounted(() => {});
               title="Admin"
             />
 
-            <LayoutNavDropdown
+            <LayoutNavAuthDropdown
               :links="
                 !session.user.value
                   ? [
@@ -119,7 +121,6 @@ onMounted(() => {});
                     ]
                   : []
               "
-              :title="session.user?.value?.name ?? 'Welcome Guest'"
             >
               <LayoutNavItem
                 v-if="session.user.value"
@@ -128,117 +129,43 @@ onMounted(() => {});
                 title="Logout"
                 @hide-menu="showMobileMenu = false"
               />
-            </LayoutNavDropdown>
+            </LayoutNavAuthDropdown>
           </ul>
         </div>
       </div>
     </nav>
-    <main class="flex-1"><slot /></main>
+    <div class="flex flex-col max-w-5xl mx-auto flex-1">
+      <main class="flex-1 m-4"><slot /></main>
 
-    <footer class="bg-white rounded-lg shadow-sm m-4 dark:bg-gray-800">
-      <div
-        class="w-full mx-auto max-w-screen-xl p-4 md:flex md:items-center md:justify-between"
-      >
-        <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400"
-          >© 2023
-          <a href="https://flowbite.com/" class="hover:underline">Flowbite™</a>.
-          All Rights Reserved.
-        </span>
-        <ul
-          class="flex flex-wrap items-center mt-3 text-sm font-medium text-gray-500 dark:text-gray-400 sm:mt-0"
-        >
-          <li>
-            <a href="#" class="hover:underline me-4 md:me-6">About</a>
-          </li>
-          <li>
-            <a href="#" class="hover:underline me-4 md:me-6">Privacy Policy</a>
-          </li>
-          <li>
-            <a href="#" class="hover:underline me-4 md:me-6">Licensing</a>
-          </li>
-          <li>
-            <a href="#" class="hover:underline">Contact</a>
-          </li>
-        </ul>
-      </div>
-    </footer>
-  </div>
-  <!--
-    <div class="flex flex-col min-h-screen">
-      <ul class="flex items-center">
-        <li>
-          <NuxtLink to="/"><Button variant="link">Home</Button></NuxtLink>
-        </li>
-        <li>
-          <NuxtLink to="/auth/login"
-          ><Button variant="link">Login</Button></NuxtLink
-          >
-        </li>
-        <li>
-          <NuxtLink to="/auth/register"
-          ><Button variant="link">Register</Button></NuxtLink
-          >
-        </li>
-        <li>
-          <NuxtLink to="/admin"><Button variant="link">Admin</Button></NuxtLink>
-        </li>
-        <li>
-          <Button @click="handleLogout" variant="link">Logout</Button>
-        </li>
-        <li>
-          <NuxtLink to="/admin/categories"
-          ><Button variant="link">Categories</Button></NuxtLink
-          >
-        </li>
-        <li>
-          <NuxtLink to="/admin/colors"
-          ><Button variant="link">Colors</Button></NuxtLink
-          >
-        </li>
-        <li>
-          <NuxtLink to="/admin/sizes"
-          ><Button variant="link">Sizes</Button></NuxtLink
-          >
-        </li>
-        <li>
-          <NuxtLink to="/admin/products"
-          ><Button variant="link">Products</Button></NuxtLink
-          >
-        </li>
-        <li>
-          <NuxtLink to="/admin/test"
-          ><Button variant="link">Test</Button></NuxtLink
-          >
-        </li>
-      </ul>
-      <main class="flex-1"><slot /></main>
-      
       <footer class="bg-white rounded-lg shadow-sm m-4 dark:bg-gray-800">
         <div
-        class="w-full mx-auto max-w-screen-xl p-4 md:flex md:items-center md:justify-between"
+          class="w-full mx-auto max-w-screen-xl p-4 md:flex md:items-center md:justify-between"
         >
-        <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400"
-        >© 2023
-        <a href="https://flowbite.com/" class="hover:underline">Flowbite™</a>.
-        All Rights Reserved.
-      </span>
-      <ul
-      class="flex flex-wrap items-center mt-3 text-sm font-medium text-gray-500 dark:text-gray-400 sm:mt-0"
-      >
-      <li>
-        <a href="#" class="hover:underline me-4 md:me-6">About</a>
-      </li>
-      <li>
-        <a href="#" class="hover:underline me-4 md:me-6">Privacy Policy</a>
-      </li>
-      <li>
-        <a href="#" class="hover:underline me-4 md:me-6">Licensing</a>
-      </li>
-      <li>
-        <a href="#" class="hover:underline">Contact</a>
-      </li>
-    </ul>
+          <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400"
+            >© 2023
+            <a href="https://flowbite.com/" class="hover:underline">Flowbite™</a
+            >. All Rights Reserved.
+          </span>
+          <ul
+            class="flex flex-wrap items-center mt-3 text-sm font-medium text-gray-500 dark:text-gray-400 sm:mt-0"
+          >
+            <li>
+              <a href="#" class="hover:underline me-4 md:me-6">About</a>
+            </li>
+            <li>
+              <a href="#" class="hover:underline me-4 md:me-6"
+                >Privacy Policy</a
+              >
+            </li>
+            <li>
+              <a href="#" class="hover:underline me-4 md:me-6">Licensing</a>
+            </li>
+            <li>
+              <a href="#" class="hover:underline">Contact</a>
+            </li>
+          </ul>
+        </div>
+      </footer>
+    </div>
   </div>
-</footer>
-</div>
---></template>
+</template>
