@@ -35,7 +35,7 @@ const { showError } = useStore();
 <template>
   <div>
     <HomeHero />
-    <div class="py-16 sm:py-32">
+    <div class="py-4">
       <div class="flex flex-col space-y-8 px-4 sm:px-6 lg:px-8">
         <ProductItemLoader
           title="Fetaured Products"

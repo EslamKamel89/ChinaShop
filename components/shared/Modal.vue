@@ -22,7 +22,7 @@ watch(
     <!--
      <DialogTrigger> Edit Profile </DialogTrigger>
   -->
-    <DialogContent>
+    <DialogScrollContent>
       <DialogHeader>
         <DialogTitle v-if="title">{{ title }}</DialogTitle>
         <DialogDescription v-if="description">
@@ -32,6 +32,6 @@ watch(
       <div>
         <slot />
       </div>
-    </DialogContent>
+    </DialogScrollContent>
   </Dialog>
 </template>
