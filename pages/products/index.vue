@@ -6,12 +6,12 @@ onMounted(() => {
 });
 </script>
 <template>
-  <div class="grid grid-cols-1 sm:grid-cols-12 w-full gap-5">
+  <div class="flex flex-col sm:grid sm:grid-cols-12 w-full gap-5">
     <!--Mobile Filter-->
-    <div class="block sm:hidden">
-      <div>Mobile Filters</div>
+    <div class="block sm:hidden text-center p-4 w-full mx-auto">
+      <div class="border rounded-lg min-h-36 w-full">Mobile Filters</div>
     </div>
-    <div class="hidden sm:block col-span-4">
+    <div class="hidden sm:block col-span-4 text-center p-4">
       <div class="border rounded-lg min-h-72">Filters</div>
     </div>
     <div class="col-span-8">
