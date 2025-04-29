@@ -3,34 +3,11 @@ const { user, clear } = useUserSession();
 definePageMeta({
   // middleware: ["auth"],
 });
-const {
-  data: products,
-  status,
-  execute,
-} = await useFetch("/api/admin/products", {
-  key: "products",
-  transform: (products) => {
-    return products.map((product) => ({
-      ...product,
-      createdAt: new Date(product.createdAt),
-      updatedAt: new Date(product.updatedAt),
-      images: [
-        ...product.images.map((img) => ({
-          ...img,
-          createdAt: new Date(img.createdAt),
-          updatedAt: new Date(img.updatedAt),
-        })),
-      ],
-      category: {
-        ...product.category,
-        createdAt: new Date(product.category.createdAt),
-        updatedAt: new Date(product.category.updatedAt),
-      },
-    }));
-  },
-  lazy: true,
-});
+const { products, status, execute } = await useFetchProducts();
 const { showError } = useStore();
+onMounted(() => {
+  execute();
+});
 </script>
 <template>
   <div>
@@ -39,12 +16,14 @@ const { showError } = useStore();
       <div class="flex flex-col space-y-8 px-4 sm:px-6 lg:px-8">
         <ProductItemLoader
           title="Fetaured Products"
+          wrapper-class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 space-x-8 space-y-8"
           v-if="status == 'pending'"
         />
         <ProductList
           v-else
           :products="products ?? []"
           title="Fetaured Products"
+          wrapper-class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 space-x-8 space-y-8"
         />
       </div>
     </div>
