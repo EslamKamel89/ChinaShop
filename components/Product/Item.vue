@@ -4,6 +4,8 @@ import { Scan } from "lucide-vue-next";
 defineProps<{
   product: Product & { images: Image[]; category: Category };
 }>();
+const { isOpen, selectedProduct, toggleModal, setSelectedProduct } =
+  usePreviewModal();
 </script>
 <template>
   <div
@@ -17,12 +19,40 @@ defineProps<{
         Featured
       </div>
       <div class="absolute right-0 top-0">
+        <!--
+        
         <SharedToolTip>
           <template #trigger>
             <Scan class="" />
           </template>
-          <template #content> Show Preview </template>
+          <template #content>
+            <Button
+              variant="ghost"
+              class="cursor-pointer"
+              @click="toggleModal(!isOpen)"
+            >
+              Show Preview
+            </Button>
+            <ProductModal
+              :is-open="isOpen"
+              :toggle-modal="toggleModal"
+              :product="product"
+            />
+          </template>
         </SharedToolTip>
+      -->
+        <Button
+          class="cursor-pointer"
+          @click="toggleModal(!isOpen)"
+          title="Show Product Preview"
+        >
+          <Scan />
+        </Button>
+        <ProductModal
+          :is-open="isOpen"
+          :toggle-modal="toggleModal"
+          :product="product"
+        />
       </div>
       <img
         :src="`${baseUrl()}/products/${product.images[0].url}`"
