@@ -26,10 +26,11 @@ const handleHideMenu = async () => {
     <NuxtLink
       v-else
       :to="to"
-      class="block py-2 px-3 text-white md:text-black rounded-sm md:bg-transparent md:p-0 cursor-pointer md:hover:text-blue-700"
+      class="flex py-2 px-3 text-white md:text-black rounded-sm md:bg-transparent md:p-0 cursor-pointer md:hover:text-blue-700"
       active-class="!bg-blue-600 md:!bg-white md:!text-blue-700 md:!dark:text-blue-500 dark:!bg-blue-600 md:dark:!bg-transparent"
       aria-current="page"
-      >{{ title }}</NuxtLink
-    >
+      ><div>{{ title }}</div>
+      <slot name="icon" />
+    </NuxtLink>
   </div>
 </template>

@@ -32,5 +32,11 @@ export default function useCart() {
     const existingItem = state.value.items.find((i) => i.id === item.id);
     return existingItem ? true : false;
   };
-  return { state, addItem, removeItem, isInCart };
+  const emptyCart = () => {
+    state.value.items = [];
+    showMessage({
+      title: "Cart is empty now",
+    });
+  };
+  return { state, addItem, removeItem, isInCart, emptyCart };
 }

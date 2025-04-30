@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { ShoppingCart } from "lucide-vue-next";
+
 const { user, clear } = useUserSession();
 const handleLogout = async () => {
   await clear();
@@ -15,7 +17,7 @@ watch(isMobile, (current, prev) => {
   showMobileMenu.value = false;
 });
 const session = useUserSession();
-
+const { state: cartItems } = useCart();
 onMounted(() => {});
 </script>
 <template>
@@ -78,7 +80,18 @@ onMounted(() => {});
               to="/cart"
               title="Cart"
               @hide-menu="showMobileMenu = false"
-            />
+            >
+              <template #icon>
+                <div class="relative">
+                  <ShoppingCart class="ml-2 w-4" />
+                  <div
+                    class="absolute -top-4 -right-5 rounded-full px-2 py-1 bg-primary/5 text-black text-xs"
+                  >
+                    {{ cartItems.items.length }}
+                  </div>
+                </div>
+              </template>
+            </LayoutNavItem>
             <LayoutNavDropdown
               v-if="session.user.value"
               :links="[
