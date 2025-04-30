@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const { products, status: productStatus, execute } = await useFetchProducts();
+const { data: cachedCategories } = useNuxtData("categories");
 const { data: categories, status: categoryStatus } = await useFetch(
   "/api/admin/categories",
   {
@@ -11,8 +12,10 @@ const { data: categories, status: categoryStatus } = await useFetch(
         updatedAt: new Date(category.updatedAt),
       }));
     },
+    default: () => cachedCategories.value,
   }
 );
+const { data: cachedColors } = useNuxtData("colors");
 const { data: colors, status: colorStatus } = await useFetch(
   "/api/admin/colors",
   {
@@ -24,8 +27,10 @@ const { data: colors, status: colorStatus } = await useFetch(
         updatedAt: new Date(color.updatedAt),
       }));
     },
+    default: () => cachedColors.value,
   }
 );
+const { data: cachedSizes } = useNuxtData("size");
 const { data: sizes, status: sizeStatus } = await useFetch("/api/admin/sizes", {
   key: "sizes",
   transform: (sizes) => {
@@ -35,6 +40,7 @@ const { data: sizes, status: sizeStatus } = await useFetch("/api/admin/sizes", {
       updatedAt: new Date(size.updatedAt),
     }));
   },
+  default: () => cachedSizes.value,
 });
 const { showError } = useStore();
 onMounted(() => {

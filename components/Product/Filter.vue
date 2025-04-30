@@ -25,7 +25,7 @@ const onClick = (id: string) => {
 <template>
   <div class="mb-8">
     <div class="text-lg font-semibold">{{ name }}</div>
-    <hr class="my-8" />
+    <hr class="my-2" />
     <div class="flex flex-wrap gap-2 self-stretch">
       <Badge
         v-for="(filter, i) in data"
