@@ -1,6 +1,5 @@
 import { ProductFilters } from "~/types";
 import db from "~/utils/db";
-import pr from "~/utils/pr";
 
 export default defineEventHandler(async (event) => {
   // const { colorId, sizeId, categoryId, isArchived, isFeatured } =
@@ -15,8 +14,8 @@ export default defineEventHandler(async (event) => {
     if (categoryId) result = { ...result, categoryId };
     if (isArchived) result = { ...result, isArchived: !!isArchived };
     if (isFeatured) result = { ...result, isFeatured: !!isFeatured };
-    pr(result, "query");
-    pr(getQuery(event), "query raw");
+    // pr(result, "query");
+    // pr(getQuery(event), "query raw");
     return result;
   };
   const products = await db.product.findMany({

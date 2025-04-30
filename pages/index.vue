@@ -3,7 +3,9 @@ const { user, clear } = useUserSession();
 definePageMeta({
   // middleware: ["auth"],
 });
-const { products, status, execute } = await useFetchProducts();
+const { products, status, execute } = await useFetchProducts({
+  isFeatured: true,
+});
 const { showError } = useStore();
 onMounted(() => {
   execute();

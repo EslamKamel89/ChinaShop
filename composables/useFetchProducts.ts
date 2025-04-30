@@ -1,7 +1,12 @@
 import type { ProductFilters } from "~/types";
 
-export default async function useFetchProducts() {
-  const query = ref<ProductFilters>();
+export default async function useFetchProducts(
+  queryParam: { isFeatured?: boolean } = {}
+) {
+  const query = ref<ProductFilters>({});
+  if (queryParam.isFeatured) {
+    query.value.isFeatured = "true";
+  }
   const route = useRoute();
   watch(
     () => route.query,
