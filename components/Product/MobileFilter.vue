@@ -20,13 +20,15 @@ const props = defineProps<{
           Pick Your Dream With Fraction Of The Cost
         </SheetDescription>
       </SheetHeader>
-      <ProductFilter
-        value-key="categoryId"
-        :data="categories ?? []"
-        name="Categories"
-      />
-      <ProductFilter value-key="sizeId" :data="sizes ?? []" name="Sizes" />
-      <ProductFilter value-key="colorId" :data="colors ?? []" name="Colors" />
+      <div class="mx-4 my-2">
+        <ProductFilter
+          value-key="categoryId"
+          :data="categories ?? []"
+          name="Categories"
+        />
+        <ProductFilter value-key="sizeId" :data="sizes ?? []" name="Sizes" />
+        <ProductFilter value-key="colorId" :data="colors ?? []" name="Colors" />
+      </div>
       <SheetFooter>
         <!--
             <SheetClose as-child>

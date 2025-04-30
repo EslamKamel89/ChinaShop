@@ -51,7 +51,7 @@ onMounted(() => {
   <div class="flex flex-col sm:grid sm:grid-cols-12 w-full gap-5">
     <!--Mobile Filter-->
     <div class="block sm:hidden text-center p-4 w-full mx-auto">
-      <div class="border rounded-lg min-h-36 w-full">
+      <div class="flex w-full justify-end">
         <ProductMobileFilter
           :colors="colors ?? []"
           :categories="categories ?? []"

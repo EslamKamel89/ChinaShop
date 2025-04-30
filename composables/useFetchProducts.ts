@@ -1,10 +1,21 @@
+import type { ProductFilters } from "~/types";
+
 export default async function useFetchProducts() {
+  const query = ref<ProductFilters>();
+  const route = useRoute();
+  watch(
+    () => route.query,
+    () => {
+      query.value = route.query;
+    }
+  );
   const {
     data: products,
     status,
     execute,
   } = await useFetch("/api/admin/products", {
     key: "products",
+    query: query,
     transform: (products) => {
       return products.map((product) => ({
         ...product,
