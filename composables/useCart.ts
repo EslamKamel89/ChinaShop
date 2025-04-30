@@ -11,12 +11,26 @@ export default function useCart() {
     if (existingItem) {
       showMessage({
         title: "Item Already Exist",
-        // description: "",
         variant: "destructive",
       });
     } else {
       state.value.items = [...state.value.items, item];
+      showMessage({
+        title: "Item Added to Cart",
+        variant: "default",
+      });
     }
   };
-  return { state, addItem };
+  const removeItem = (item: Product) => {
+    state.value.items = state.value.items.filter((i) => i.id !== item.id);
+    showMessage({
+      title: "Item Removed from cart",
+      variant: "default",
+    });
+  };
+  const isInCart = (item: Product) => {
+    const existingItem = state.value.items.find((i) => i.id === item.id);
+    return existingItem ? true : false;
+  };
+  return { state, addItem, removeItem, isInCart };
 }
