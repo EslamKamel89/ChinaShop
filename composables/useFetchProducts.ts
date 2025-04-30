@@ -38,6 +38,11 @@ export default async function useFetchProducts(
           createdAt: new Date(product.category.createdAt),
           updatedAt: new Date(product.category.updatedAt),
         },
+        color: {
+          ...product.color,
+          createdAt: new Date(product.color.createdAt),
+          updatedAt: new Date(product.color.updatedAt),
+        },
       }));
     },
     lazy: true,

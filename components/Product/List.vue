@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { Category, Image, Product } from "@prisma/client";
+import type { Category, Color, Image, Product } from "@prisma/client";
 defineProps<{
-  products: (Product & { images: Image[]; category: Category })[];
+  products: (Product & { images: Image[]; category: Category; color: Color })[];
   title: string;
   wrapperClass: string;
 }>();

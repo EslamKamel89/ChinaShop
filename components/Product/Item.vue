@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import type { Category, Image, Product } from "@prisma/client";
+import type { Category, Color, Image, Product } from "@prisma/client";
 import { Scan } from "lucide-vue-next";
 defineProps<{
-  product: Product & { images: Image[]; category: Category };
+  product: Product & { images: Image[]; category: Category; color: Color };
 }>();
 const { isOpen, selectedProduct, toggleModal, setSelectedProduct } =
   usePreviewModal();
+const { state: cartItems, addItem } = useCart();
 </script>
 <template>
   <div
@@ -66,7 +67,9 @@ const { isOpen, selectedProduct, toggleModal, setSelectedProduct } =
         <div class="font-thin text-sm">{{ product.category.name }}</div>
       </div>
       <div>EGP {{ product.price }}</div>
-      <Button class="w-full" variant="outline"> Add To Card</Button>
+      <Button class="w-full" variant="outline" @click="addItem(product)">
+        Add To Card</Button
+      >
     </div>
   </div>
 </template>
