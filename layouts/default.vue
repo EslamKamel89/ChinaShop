@@ -82,7 +82,7 @@ onMounted(() => {});
               @hide-menu="showMobileMenu = false"
             >
               <template #icon>
-                <div class="relative">
+                <div class="relative" v-if="cartItems.items.length">
                   <ShoppingCart class="ml-2 w-4" />
                   <div
                     class="absolute -top-4 -right-5 rounded-full px-2 py-1 bg-primary/5 text-black text-xs"
@@ -147,7 +147,7 @@ onMounted(() => {});
         </div>
       </div>
     </nav>
-    <div class="flex flex-col max-w-5xl mx-auto flex-1">
+    <div class="flex flex-col max-w-5xl w-full mx-auto flex-1">
       <main class="flex-1 m-4"><slot /></main>
 
       <footer class="bg-white rounded-lg shadow-sm m-4 dark:bg-gray-800">

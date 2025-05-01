@@ -1,12 +1,24 @@
-import type { Product } from "@prisma/client";
+import type { Category, Color, Image, Product, Size } from "@prisma/client";
 import { useStorage } from "@vueuse/core";
 interface CartState {
-  items: Product[];
+  items: (Product & {
+    images: Image[];
+    color: Color;
+    size: Size;
+    category: Category;
+  })[];
 }
 const state = useStorage<CartState>("cartItems", { items: [] });
 const { showMessage } = useStore();
 export default function useCart() {
-  const addItem = (item: Product) => {
+  const addItem = (
+    item: Product & {
+      images: Image[];
+      color: Color;
+      size: Size;
+      category: Category;
+    }
+  ) => {
     const existingItem = state.value.items.find((i) => i.id === item.id);
     if (existingItem) {
       showMessage({

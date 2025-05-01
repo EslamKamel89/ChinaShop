@@ -1,8 +1,13 @@
 <script setup lang="ts">
-import type { Category, Color, Image, Product } from "@prisma/client";
+import type { Category, Color, Image, Product, Size } from "@prisma/client";
 import { Scan, Trash } from "lucide-vue-next";
 defineProps<{
-  product: Product & { images: Image[]; category: Category; color: Color };
+  product: Product & {
+    images: Image[];
+    category: Category;
+    color: Color;
+    size: Size;
+  };
 }>();
 const { isOpen, selectedProduct, toggleModal, setSelectedProduct } =
   usePreviewModal();
