@@ -9,6 +9,11 @@ const totalPrice = computed(() => {
 const onCheckout = async () => {
   const itemsIds = cartItems.value.items.map((i) => i.id);
   pr(itemsIds, "itemsIds");
+  const response = await $fetch("/api/checkout", {
+    method: "POST",
+    body: { ids: itemsIds },
+  });
+  pr(response, "onChekcout response");
 };
 </script>
 <template>
