@@ -50,4 +50,21 @@ export default defineNuxtConfig({
       ],
     },
   },
+  runtimeConfig: {
+    // Server
+    stripe: {
+      key: process.env.NUXT_STRIPE_SECRET,
+      options: {},
+    },
+    // Client
+    stripeSecret: "",
+    stripeWebHookSecret: "",
+    public: {
+      stripeKey: "",
+      stripe: {
+        key: process.env.NUXT_PUBLIC_STRIPE_KEY,
+        options: {},
+      },
+    },
+  },
 });
