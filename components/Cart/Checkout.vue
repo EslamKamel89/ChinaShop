@@ -1,0 +1,18 @@
+<script setup lang="ts">
+const { state: cartItems } = useCart();
+const totalPrice = computed(() => {
+  return cartItems.value.items.reduce(
+    (sum: number, current) => sum + current.price,
+    0
+  );
+});
+</script>
+<template>
+  <div
+    class="flex flex-col space-y-2 items-center md:max-w-xl bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 relative"
+  >
+    <h2 lass="font-bold text-xl mb-4 tracking-tighter">Order Summary</h2>
+    <p>Total Price: EGP {{ totalPrice }}</p>
+    <Button class="w-full">Checkout</Button>
+  </div>
+</template>

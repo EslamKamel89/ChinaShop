@@ -1,10 +1,16 @@
 <script setup lang="ts">
-import type { Category, Color, Image, Product } from "@prisma/client";
+import type { Category, Color, Image, Product, Size } from "@prisma/client";
 defineProps<{
-  product: Product & { images: Image[]; category: Category; color: Color };
+  product: Product & {
+    images: Image[];
+    category: Category;
+    color: Color;
+    size: Size;
+  };
   isOpen: boolean;
   toggleModal: (value: boolean) => void;
 }>();
+const { state: cartItems, addItem, isInCart, removeItem } = useCart();
 </script>
 
 <template>
@@ -48,7 +54,22 @@ defineProps<{
           <div>
             <AdminColorValue :color-code="product.color.value" />
           </div>
-          <Button class="w-full" variant="outline"> Add To Card</Button>
+          <Button
+            v-if="!isInCart(product)"
+            class="w-full"
+            variant="outline"
+            @click="addItem(product)"
+          >
+            Add To Cart</Button
+          >
+          <Button
+            v-else
+            class="w-full text-red-400"
+            variant="secondary"
+            @click="removeItem(product)"
+          >
+            Remove From Cart <Trash
+          /></Button>
         </div>
       </div>
     </div>
