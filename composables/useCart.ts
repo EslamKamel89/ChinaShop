@@ -46,9 +46,6 @@ export default function useCart() {
   };
   const emptyCart = () => {
     state.value.items = [];
-    showMessage({
-      title: "Cart is empty now",
-    });
   };
   return { state, addItem, removeItem, isInCart, emptyCart };
 }

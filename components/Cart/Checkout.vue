@@ -1,5 +1,6 @@
 <script setup lang="ts">
-const { state: cartItems } = useCart();
+const { state: cartItems, emptyCart } = useCart();
+const { showMessage } = useStore();
 const totalPrice = computed(() => {
   return cartItems.value.items.reduce(
     (sum: number, current) => sum + current.price,
@@ -9,11 +10,17 @@ const totalPrice = computed(() => {
 const onCheckout = async () => {
   const itemsIds = cartItems.value.items.map((i) => i.id);
   pr(itemsIds, "itemsIds");
-  const response = await $fetch("/api/checkout", {
+  const order = await $fetch("/api/checkout", {
     method: "POST",
     body: { ids: itemsIds },
   });
-  pr(response, "onChekcout response");
+  pr(order, "onChekcout response");
+  if (order) {
+    emptyCart();
+    showMessage({
+      title: "Your Order is placed successfully",
+    });
+  }
 };
 </script>
 <template>
