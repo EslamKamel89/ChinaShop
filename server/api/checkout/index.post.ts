@@ -28,6 +28,6 @@ export default defineEventHandler(async (event) => {
     },
     include: { orderItems: { include: { product: true } } },
   });
-  //! stripe session
+  // const session = await stripe;
   return order;
 });

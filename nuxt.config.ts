@@ -16,6 +16,7 @@ export default defineNuxtConfig({
     "@nuxt/icon",
     "nuxt-auth-utils",
     "@prisma/nuxt",
+    "@unlok-co/nuxt-stripe",
   ],
   shadcn: {
     /**
