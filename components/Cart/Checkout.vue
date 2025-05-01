@@ -10,15 +10,20 @@ const totalPrice = computed(() => {
 const onCheckout = async () => {
   const itemsIds = cartItems.value.items.map((i) => i.id);
   pr(itemsIds, "itemsIds");
-  const order = await $fetch("/api/checkout", {
+  const data = await $fetch("/api/checkout", {
     method: "POST",
     body: { ids: itemsIds },
   });
-  pr(order, "onChekcout response");
-  if (order) {
+  pr(data, "onChekcout response");
+  if (data && data.sessionURL) {
     emptyCart();
     showMessage({
       title: "Your Order is placed successfully",
+    });
+    window.location.href = data.sessionURL;
+  } else {
+    showMessage({
+      title: "Sorry, unknown error occured",
     });
   }
 };
