@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import Heading from "~/components/ui/Heading.vue";
-
 definePageMeta({
   middleware: ["admin"],
 });
@@ -18,6 +17,7 @@ const { totalRevenue, stockCount, salesCount, graphData } = await $fetch(
         <AnalyticsStat title="Stock Count" :value="stockCount" />
         <AnalyticsStat title="Sales Count" :value="salesCount" />
       </div>
+      <AnalyticsChart :data="graphData" />
     </div>
   </div>
 </template>
