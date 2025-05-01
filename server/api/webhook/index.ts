@@ -7,6 +7,7 @@ export default defineEventHandler(async (event) => {
   const stripe = await useServerStripe(event);
   const signature = (await getHeader(event, "stripe-signature")) as string;
   const body = await readRawBody(event);
+  const parsedBody = await readBody(event);
   if (body == null) {
     throw createError({
       message: "Unknown error occured",
@@ -14,6 +15,7 @@ export default defineEventHandler(async (event) => {
     });
   }
   let stripeEvent: Stripe.Event;
+  pr(body, "Body");
   try {
     stripeEvent = stripe.webhooks.constructEvent(
       body,
@@ -40,7 +42,7 @@ export default defineEventHandler(async (event) => {
   const addressStr = addressComponents.filter((val) => val != null).join(", ");
   if (stripeEvent.type == "checkout.session.completed") {
     const order = await db.order.update({
-      where: { id: session.metadata?.orderId ?? "" },
+      where: { id: parsedBody.metadata?.orderId ?? "" },
       data: {
         isPaid: true,
         address: addressStr,
@@ -48,6 +50,7 @@ export default defineEventHandler(async (event) => {
       },
       include: { orderItems: true },
     });
+    pr(order, "order");
     const productIds = order.orderItems.map((orderItem) => orderItem.productId);
     await db.product.updateMany({
       where: { id: { in: [...productIds] } },

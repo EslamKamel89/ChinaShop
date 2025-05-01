@@ -11,3 +11,7 @@ export type ProductFilters = {
   isFeatured?: string | null;
   isArchived?: string | null;
 };
+export type GraphData = {
+  name: string;
+  total: number;
+};

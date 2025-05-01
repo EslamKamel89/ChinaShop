@@ -102,7 +102,7 @@ onMounted(() => {});
               :links="[
                 {
                   to: '/admin',
-                  title: 'Dashboard',
+                  title: 'Analytics',
                 },
                 {
                   to: '/admin/categories',
