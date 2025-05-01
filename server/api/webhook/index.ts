@@ -1,4 +1,6 @@
 import { useServerStripe } from "#stripe/server";
+import { Stripe } from "stripe";
+import db from "~/utils/db";
 import pr from "~/utils/pr";
 export default defineEventHandler(async (event) => {
   pr("Custom Web hook");
@@ -11,10 +13,52 @@ export default defineEventHandler(async (event) => {
       statusCode: 400,
     });
   }
-  pr(body, "body");
-  // let stripeEvent = stripe.webhooks.constructEvent(
-  //   body,
-  //   signature,
-  //   useRuntimeConfig().stripeWebHookSecret
-  // );
+  let stripeEvent: Stripe.Event;
+  try {
+    stripeEvent = stripe.webhooks.constructEvent(
+      body,
+      signature,
+      useRuntimeConfig().stripeWebHookSecret
+    );
+  } catch (error) {
+    pr(error, "error");
+    throw createError({
+      statusCode: 400,
+      statusMessage: "Invalid Signature",
+    });
+  }
+  const session = stripeEvent.data.object as Stripe.Checkout.Session;
+  const address = session.customer_details?.address;
+  const addressComponents = [
+    address?.line1,
+    address?.line2,
+    address?.city,
+    address?.state,
+    address?.postal_code,
+    address?.country,
+  ];
+  const addressStr = addressComponents.filter((val) => val != null).join(", ");
+  if (stripeEvent.type == "checkout.session.completed") {
+    const order = await db.order.update({
+      where: { id: session.metadata?.orderId ?? "" },
+      data: {
+        isPaid: true,
+        address: addressStr,
+        phone: session.customer_details?.phone ?? "",
+      },
+      include: { orderItems: true },
+    });
+    const productIds = order.orderItems.map((orderItem) => orderItem.productId);
+    await db.product.updateMany({
+      where: { id: { in: [...productIds] } },
+      data: {
+        isArchived: true,
+      },
+    });
+    return 200;
+  }
+  throw createError({
+    statusCode: 400,
+    statusMessage: "Unknown error occured",
+  });
 });
