@@ -1,5 +1,23 @@
 <script setup lang="ts">
 const { state: cartItems } = useCart();
+const route = useRoute();
+const { showMessage } = useStore();
+onMounted(() => {
+  if (pr(route.query.success, "route.query.success")) {
+    setTimeout(() => {
+      showMessage({
+        title: "Payament completed successfully",
+      });
+    }, 1000);
+  } else if (route.query.canceled) {
+    setTimeout(() => {
+      showMessage({
+        title: "Payment failed",
+        variant: "destructive",
+      });
+    }, 1000);
+  }
+});
 </script>
 <template>
   <div>
