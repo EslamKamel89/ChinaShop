@@ -6,6 +6,10 @@ const totalPrice = computed(() => {
     0
   );
 });
+const onCheckout = async () => {
+  const itemsIds = cartItems.value.items.map((i) => i.id);
+  pr(itemsIds, "itemsIds");
+};
 </script>
 <template>
   <div
@@ -13,6 +17,6 @@ const totalPrice = computed(() => {
   >
     <h2 lass="font-bold text-xl mb-4 tracking-tighter">Order Summary</h2>
     <p>Total Price: EGP {{ totalPrice }}</p>
-    <Button class="w-full">Checkout</Button>
+    <Button class="w-full" type="button" @click="onCheckout">Checkout</Button>
   </div>
 </template>

@@ -77,6 +77,11 @@ onMounted(() => {});
               @hide-menu="showMobileMenu = false"
             />
             <LayoutNavItem
+              to="/products"
+              title="Explore"
+              @hide-menu="showMobileMenu = false"
+            />
+            <LayoutNavItem
               to="/cart"
               title="Cart"
               @hide-menu="showMobileMenu = false"
